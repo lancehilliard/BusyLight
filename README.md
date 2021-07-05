@@ -1,6 +1,8 @@
 # BusyLight
 
-BusyLight is two Windows services which work in concert to signal to others nearby that you are presently on a call, by illuminating a [BlinkStick Square](https://www.blinkstick.com/products/blinkstick-square) while your microphone is being accessed by a Desktop[1] app. It suits the scenario wherein you're regularly using one or more computers at the same workstation to hold calls, and you want to _automatically_ and _visually_ share that state with others nearby.
+If you're regularly using one or more computers to hold calls at your desk, and you want to _automatically_ and _visually_ alert others nearby, then BusyLight can help.
+
+BusyLight is two Windows services which work in concert to illuminate a [BlinkStick Square](https://www.blinkstick.com/products/blinkstick-square) whenever your microphone is being accessed by a Desktop[1] app on your Windows 10 computer.
 
 ## BusyLight.ActivityLoggingService
 
