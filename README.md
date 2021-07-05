@@ -6,11 +6,11 @@ BusyLight is two Windows services which work in concert to illuminate a [BlinkSt
 
 ## BusyLight.ActivityLoggingService
 
-This requires Windows 10 1903 or greater and detects when your microphone is being accessed. Run it on any computer(s)[2] from which you join calls.
+This service requires Windows 10 1903 or greater and detects when your microphone is being accessed. Run it on any computer(s)[2] from which you join calls.
 
 ## BusyLight.LightService
 
-This illuminates your BlinkStick when microphone access (muted or not) is detected. Run it on the machine having the [BlinkStick Square](https://www.blinkstick.com/products/blinkstick-square). It will automatically illuminate the first two LEDs on the device for the duration of your call.
+This service illuminates your BlinkStick when microphone access[3] is detected. Run it on the Windows computer attached to the [BlinkStick Square](https://www.blinkstick.com/products/blinkstick-square). It will automatically illuminate the first two LEDs on the device for the duration of your call.
 
 ## Requirements
 
@@ -21,3 +21,4 @@ This illuminates your BlinkStick when microphone access (muted or not) is detect
 ### Notes
 * [1] Pull requests which add UWP app support are invited.
 * [2] Are you joining your calls via your Android phone? Maybe [Tasker](https://github.com/lancehilliard/BusyLight/wiki/Tasker) can help!
+* [3] Microphone mute/unmute is not tracked. While the microphone is accessed at all, illumination occurs.
