@@ -5,14 +5,17 @@ namespace BusyLight.Core {
         void Change();
     }
 
-    public class RedDeviceChanger : IDeviceChanger {
+    public class OnDeviceChanger : IDeviceChanger {
         readonly ILightDevice _device;
-        public RedDeviceChanger(ILightDevice device) {
+        readonly string _color;
+
+        public OnDeviceChanger(ILightDevice device, string color) {
             _device = device;
+            _color = color;
         }
 
         public void Change() {
-            _device.SetQuadrantColor(RgbColor.FromString("red"), Quadrant.First);
+            _device.SetQuadrantColor(RgbColor.FromString(_color), Quadrant.First);
         }
     }
 

@@ -14,7 +14,7 @@ namespace BusyLight.LightService {
             InitializeComponent();
         }
 
-        static readonly DeviceChangerFactory DeviceChangerFactory = new DeviceChangerFactory(new ActivityChecker(ConfigurationManager.AppSettings["RestDatabaseApiKey"], ConfigurationManager.AppSettings["RestBaseUrl"]));
+        static readonly DeviceChangerFactory DeviceChangerFactory = new DeviceChangerFactory(new ActivityChecker(ConfigurationManager.AppSettings["RestDatabaseApiKey"], ConfigurationManager.AppSettings["RestBaseUrl"]), ConfigurationManager.AppSettings["MicrophoneActiveColor"]);
         static readonly ILightDevice LightDevice = new SquareLightDevice(BlinkStick.FindFirst());
 
         protected override void OnStart(string[] args) {
