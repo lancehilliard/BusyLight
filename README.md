@@ -1,6 +1,6 @@
 # BusyLight
 
-If you want to _automatically_ and _visually_ alert others nearby that now might not be the best time to interrupt you, then BusyLight can help.
+If you want to _automatically_ and _visually_ alert others nearby that you're busy, then BusyLight can help.
 
 So far, it only tracks ongoing calls. What else should it track? Leave a comment below, and don't forget to smash that "LIKE" bu-- oh wait... wrong platform.
 
