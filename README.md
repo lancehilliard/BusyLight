@@ -13,7 +13,7 @@ This illuminates your BlinkStick when microphone access (muted or not) is detect
 ## Requirements
 
 * The code expects a [BlinkStick Square](https://www.blinkstick.com/products/blinkstick-square) plugged into the machine running LightService.
-* Both services require a free [restdb.io](https://restdb.io/) account having a database with an [Activities collection](https://github.com/lancehilliard/BusyLight/wiki/Activities).
+* Both services require a free [restdb.io](https://restdb.io/) account having a database with an [Activities](https://github.com/lancehilliard/BusyLight/wiki/Activities) collection.
 * Some [configuration](https://github.com/lancehilliard/BusyLight/wiki/Configuration) is required.
 
 ### Notes
