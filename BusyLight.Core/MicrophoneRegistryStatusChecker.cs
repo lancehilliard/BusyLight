@@ -13,19 +13,19 @@ namespace BusyLight.Core {
         public bool IsMicrophoneBeingUsed() {
             var result = false;
             var registryKeys = new List<RegistryKey>{Registry.LocalMachine,Registry.CurrentUser};
-            foreach (var registryKey in registryKeys.Where(registryKey => !result)) {
+            foreach (var registryKey in registryKeys.Where(x => !result)) {
                 using (var rootSubKey = registryKey.OpenSubKey(RootSubKey, RegistryKeyPermissionCheck.ReadSubTree))
                 {
                     if (rootSubKey != null)
                     {
                         var subKeyNames = rootSubKey.GetSubKeyNames();
-                        foreach (var subKeyName in subKeyNames)
+                        foreach (var subKeyName in subKeyNames.Where(x=>!result))
                         {
                             var subKeyPath = $@"{RootSubKey}\{subKeyName}";
                             using (var subKey = Registry.CurrentUser.OpenSubKey(subKeyPath, RegistryKeyPermissionCheck.ReadSubTree)) {
                                 if (subKey != null) {
-                                    var lastUsedFileTimeStop = Convert.ToInt64(subKey.GetValue("LastUsedTimeStop"));
-                                    result = default(long).Equals(lastUsedFileTimeStop);
+                                    var value = subKey.GetValue("LastUsedTimeStop");
+                                    result = value != null && default(long).Equals(Convert.ToInt64(value));
                                 }
                             }
                         }
