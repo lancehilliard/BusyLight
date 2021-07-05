@@ -2,7 +2,7 @@
 
 If you want to _automatically_ and _visually_ alert others nearby that you're busy, then BusyLight can help.
 
-So far, it only tracks ongoing calls. What else should it track? Leave a comment below, and don't forget to smash that "LIKE" bu-- oh wait... wrong platform.
+So far, it only tracks calls (voice calls, to be precise). What else should it track? Leave a comment below, and don't forget to smash that "LIKE" bu-- oh wait... wrong platform.
 
 BusyLight is two Windows services which work in concert to illuminate a [BlinkStick Square](https://www.blinkstick.com/products/blinkstick-square) whenever your microphone is being accessed by any app on your computer.
 
