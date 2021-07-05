@@ -18,4 +18,4 @@ Both services require a free [restdb.io](https://restdb.io/) account having a da
 
 ### Notes
 * [1] Pull requests which add UWP app support are invited.
-* [2] Are you joining your calls via your Android phone? Maybe Tasker can help!
+* [2] Are you joining your calls via your Android phone? Maybe [Tasker](https://github.com/lancehilliard/BusyLight/wiki/Tasker) can help!
