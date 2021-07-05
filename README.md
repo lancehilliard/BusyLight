@@ -4,7 +4,7 @@ BusyLight is two Windows services which work in concert to signal to others near
 
 ## BusyLight.ActivityLoggingService
 
-This requires Windows 10 1903 or greater and detects when your microphone is being accessed. Run it on any computer[2] from which you join calls.
+This requires Windows 10 1903 or greater and detects when your microphone is being accessed. Run it on any computer(s)[2] from which you join calls.
 
 ## BusyLight.LightService
 
