@@ -16,7 +16,7 @@ This service illuminates your BlinkStick when microphone access[3] is detected. 
 
 ## Requirements
 
-* The code expects a [BlinkStick Square](https://www.blinkstick.com/products/blinkstick-square) plugged into the machine running LightService.
+* LightService expects a [BlinkStick Square](https://www.blinkstick.com/products/blinkstick-square) plugged into the machine.
 * Both services require a free [restdb.io](https://restdb.io/) account having a database with an [Activities](https://github.com/lancehilliard/BusyLight/wiki/Activities) collection.
 * Some [configuration](https://github.com/lancehilliard/BusyLight/wiki/Configuration) is required.
 
