@@ -14,7 +14,7 @@ namespace BusyLight.Core {
             var result = false;
             var registryKeys = new List<RegistryKey>{Registry.LocalMachine,Registry.CurrentUser};
             foreach (var registryKey in registryKeys.Where(registryKey => !result)) {
-                using (var rootSubKey = registryKey.OpenSubKey(RootSubKey))
+                using (var rootSubKey = registryKey.OpenSubKey(RootSubKey, RegistryKeyPermissionCheck.ReadSubTree))
                 {
                     if (rootSubKey != null)
                     {
@@ -22,7 +22,7 @@ namespace BusyLight.Core {
                         foreach (var subKeyName in subKeyNames)
                         {
                             var subKeyPath = $@"{RootSubKey}\{subKeyName}";
-                            using (var subKey = Registry.CurrentUser.OpenSubKey(subKeyPath)) {
+                            using (var subKey = Registry.CurrentUser.OpenSubKey(subKeyPath, RegistryKeyPermissionCheck.ReadSubTree)) {
                                 if (subKey != null) {
                                     var lastUsedFileTimeStop = Convert.ToInt64(subKey.GetValue("LastUsedTimeStop"));
                                     result = default(long).Equals(lastUsedFileTimeStop);
