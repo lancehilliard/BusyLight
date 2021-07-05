@@ -4,6 +4,7 @@ using System.Threading;
 using BlinkStickDotNet;
 using BusyLight.Core;
 using System.Configuration;
+using System.Diagnostics.CodeAnalysis;
 
 namespace BusyLight.LightService {
     public partial class Service1 : ServiceBase {
@@ -13,18 +14,19 @@ namespace BusyLight.LightService {
             InitializeComponent();
         }
 
-        static readonly DeviceChangerFactory DeviceChangerFactory = new DeviceChangerFactory(new ActivityChecker(ConfigurationManager.AppSettings["DatabaseApiKey"]));
+        static readonly DeviceChangerFactory DeviceChangerFactory = new DeviceChangerFactory(new ActivityChecker(ConfigurationManager.AppSettings["RestDatabaseApiKey"], ConfigurationManager.AppSettings["RestBaseUrl"]));
+        static readonly ILightDevice LightDevice = new SquareLightDevice(BlinkStick.FindFirst());
 
         protected override void OnStart(string[] args) {
             _thread = new Thread(DoWork) {IsBackground = true};
             _thread.Start();
         }
 
+        [SuppressMessage("ReSharper", "FunctionNeverReturns", Justification = "Function runs in a background thread and is intended to run infinitely.")]
         void DoWork() {
             while (true) {
                 try {
-                    var device = BlinkStick.FindFirst();
-                    var deviceChanger = DeviceChangerFactory.Create(device);
+                    var deviceChanger = DeviceChangerFactory.Create(LightDevice);
                     deviceChanger.Change();
                 }
                 catch (Exception e) {

@@ -95,7 +95,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="App.override.config" />
+    <Content Include="App.override.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="BusyLight.ActivityLoggingService_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

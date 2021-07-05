@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using RestSharp;
 
@@ -10,12 +11,16 @@ namespace BusyLight.Core {
 
     public class ActivityChecker : IActivityChecker {
         readonly string _databaseApiKey;
-        public ActivityChecker(string databaseApiKey) {
+        readonly string _restBaseUrl;
+
+        public ActivityChecker(string databaseApiKey, string restBaseUrl) {
             _databaseApiKey = databaseApiKey;
+            _restBaseUrl = restBaseUrl;
         }
 
         public bool IsMicrophoneActive() {
-            var client = new RestClient("https://busylight-b8d1.restdb.io/rest/activities");
+            var url = $@"{_restBaseUrl}/activities?q={{""name"":""microphone""}}";
+            var client = new RestClient(url);
             var request = new RestRequest(Method.GET);
             request.AddHeader("cache-control", "no-cache");
             request.AddHeader("x-apikey", _databaseApiKey);
@@ -27,8 +32,9 @@ namespace BusyLight.Core {
             return result;
         }
 
+        [SuppressMessage("ReSharper", "ClassNeverInstantiated.Local", Justification = "Class is instantiated during deserialization.")]
         class Activity {
-            public string Name { get; set; }
+            [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local", Justification = "Value is set during deserialization.")]
             public DateTime When { get; set; }
         }
     }

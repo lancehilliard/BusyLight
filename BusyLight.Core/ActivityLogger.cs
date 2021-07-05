@@ -4,12 +4,17 @@ using RestSharp;
 namespace BusyLight.Core {
     public class ActivityLogger {
         readonly string _databaseApiKey;
-        public ActivityLogger(string databaseApiKey) {
+        readonly string _restBaseUrl;
+        readonly string _microphoneActivityRecordId;
+
+        public ActivityLogger(string databaseApiKey, string restBaseUrl, string microphoneActivityRecordId) {
             _databaseApiKey = databaseApiKey;
+            _restBaseUrl = restBaseUrl;
+            _microphoneActivityRecordId = microphoneActivityRecordId;
         }
 
         public void LogMicrophoneUse() {
-            var updateClient = new RestClient("https://busylight-b8d1.restdb.io/rest/activities/60dfdff3a46667610000390b");
+            var updateClient = new RestClient($"{_restBaseUrl}/activities/{_microphoneActivityRecordId}");
             var updateRequest = new RestRequest(Method.PUT);
             updateRequest.AddHeader("cache-control", "no-cache");
             updateRequest.AddHeader("x-apikey", _databaseApiKey);

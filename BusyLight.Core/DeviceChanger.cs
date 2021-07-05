@@ -5,37 +5,25 @@ namespace BusyLight.Core {
         void Change();
     }
 
-    public class RedDeviceChanger : DeviceChanger {
-        public RedDeviceChanger(BlinkStick device) : base(device) {}
-
-        protected override void ChangeDevice(BlinkStick device) {
-            device.SetColor(RgbColor.FromString("red"));
-        }
-    }
-
-    public class OffDeviceChanger : DeviceChanger {
-        public OffDeviceChanger(BlinkStick device) : base(device) {}
-
-        protected override void ChangeDevice(BlinkStick device) {
-            device.TurnOff();
-        }
-    }
-
-    public abstract class DeviceChanger : IDeviceChanger {
-        readonly BlinkStick _device;
-        protected DeviceChanger(BlinkStick device) {
+    public class RedDeviceChanger : IDeviceChanger {
+        readonly ILightDevice _device;
+        public RedDeviceChanger(ILightDevice device) {
             _device = device;
         }
 
         public void Change() {
-            if (_device != null) {
-                if (_device.OpenDevice()) {
-                    ChangeDevice(_device);
-                    _device.CloseDevice();
-                }
-            }
+            _device.SetQuadrantColor(RgbColor.FromString("red"), Quadrant.First);
+        }
+    }
+
+    public class OffDeviceChanger : IDeviceChanger {
+        readonly ILightDevice _device;
+        public OffDeviceChanger(ILightDevice device) {
+            _device = device;
         }
 
-        protected virtual void ChangeDevice(BlinkStick device) {}
+        public void Change() {
+            _device.TurnOffAllLights();
+        }
     }
 }

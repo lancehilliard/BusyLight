@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Diagnostics.CodeAnalysis;
 using System.ServiceProcess;
 using System.Threading;
 using BusyLight.Core;
@@ -11,7 +12,7 @@ namespace BusyLight.ActivityLoggingService {
         }
 
         static readonly IMicrophoneStatusChecker MicrophoneStatusChecker = new MicrophoneRegistryStatusChecker();
-        static readonly ActivityLogger ActivityLogger = new ActivityLogger(ConfigurationManager.AppSettings["DatabaseApiKey"]);
+        static readonly ActivityLogger ActivityLogger = new ActivityLogger(ConfigurationManager.AppSettings["RestDatabaseApiKey"], ConfigurationManager.AppSettings["RestBaseUrl"], ConfigurationManager.AppSettings["MicrophoneActivityRecordId"]);
         Thread _thread;
 
         protected override void OnStart(string[] args) {
@@ -19,6 +20,7 @@ namespace BusyLight.ActivityLoggingService {
             _thread.Start();
         }
 
+        [SuppressMessage("ReSharper", "FunctionNeverReturns", Justification = "Function runs in a background thread and is intended to run infinitely.")]
         void DoWork() {
             while (true) {
                 try {
