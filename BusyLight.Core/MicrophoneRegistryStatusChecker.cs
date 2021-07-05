@@ -9,22 +9,34 @@ namespace BusyLight.Core {
     }
 
     public class MicrophoneRegistryStatusChecker : IMicrophoneStatusChecker {
-        static readonly string RootSubKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\microphone\NonPackaged";
+        static readonly string RootSubKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\microphone";
         public bool IsMicrophoneBeingUsed() {
             var result = false;
             var registryKeys = new List<RegistryKey>{Registry.LocalMachine,Registry.CurrentUser};
             foreach (var registryKey in registryKeys.Where(x => !result)) {
-                using (var rootSubKey = registryKey.OpenSubKey(RootSubKey, RegistryKeyPermissionCheck.ReadSubTree))
+                result = IsMicrophoneBeingUsedByChildren(registryKey, RootSubKey);
+            }
+            return result;
+        }
+
+        bool IsMicrophoneBeingUsedByChildren(RegistryKey registryKey, string parentSubKeyName) {
+            var result = false;
+            using (var parentSubKey = registryKey.OpenSubKey(parentSubKeyName, RegistryKeyPermissionCheck.ReadSubTree))
+            {
+                if (parentSubKey != null)
                 {
-                    if (rootSubKey != null)
+                    var childSubKeyNames = parentSubKey.GetSubKeyNames();
+                    foreach (var childSubKeyName in childSubKeyNames.Where(x=>!result))
                     {
-                        var subKeyNames = rootSubKey.GetSubKeyNames();
-                        foreach (var subKeyName in subKeyNames.Where(x=>!result))
-                        {
-                            var subKeyPath = $@"{RootSubKey}\{subKeyName}";
-                            using (var subKey = Registry.CurrentUser.OpenSubKey(subKeyPath, RegistryKeyPermissionCheck.ReadSubTree)) {
-                                if (subKey != null) {
-                                    var value = subKey.GetValue("LastUsedTimeStop");
+                        var childSubKeyPath = $@"{parentSubKeyName}\{childSubKeyName}";
+                        using (var childSubKey = Registry.CurrentUser.OpenSubKey(childSubKeyPath, RegistryKeyPermissionCheck.ReadSubTree)) {
+                            if (childSubKey != null) {
+                                var grandChildSubKeyNames = childSubKey.GetSubKeyNames();
+                                if (grandChildSubKeyNames.Any()) {
+                                    result = IsMicrophoneBeingUsedByChildren(registryKey, childSubKeyPath);
+                                }
+                                else {
+                                    var value = childSubKey.GetValue("LastUsedTimeStop");
                                     result = value != null && default(long).Equals(Convert.ToInt64(value));
                                 }
                             }
