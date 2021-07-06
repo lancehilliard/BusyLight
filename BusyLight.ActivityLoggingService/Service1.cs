@@ -12,6 +12,7 @@ namespace BusyLight.ActivityLoggingService {
             InitializeComponent();
         }
 
+        static readonly int PublishIntervalSeconds = Convert.ToInt32(ConfigurationManager.AppSettings["PublishIntervalSeconds"]);
         static readonly IMicrophoneStatusChecker MicrophoneStatusChecker = new MicrophoneRegistryStatusChecker();
         static readonly ActivityLogger ActivityLogger = new ActivityLogger(new ConnectionFactory {Uri = new Uri(ConfigurationManager.AppSettings["MessageQueueUrl"])});
         Thread _thread;
@@ -29,7 +30,7 @@ namespace BusyLight.ActivityLoggingService {
                     var microphoneIsBeingUsed = MicrophoneStatusChecker.IsMicrophoneBeingUsed();
                     if (microphoneIsBeingUsed) {
                         ActivityLogger.LogMicrophoneUse();
-                        secondsToWaitBeforeNextCheck = 5;
+                        secondsToWaitBeforeNextCheck = PublishIntervalSeconds;
                     }
                 }
                 catch (Exception e) {
