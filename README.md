@@ -6,11 +6,11 @@ So far, it only tracks calls (active/ongoing voice and video calls, to be precis
 
 BusyLight is two Windows services which work in concert to illuminate a [BlinkStick Square](https://www.blinkstick.com/products/blinkstick-square) whenever your microphone is being accessed by any app on your computer(s).
 
-## BusyLight.ActivityLoggingService
+## BusyLight.ActivityPublisher
 
 This service requires Windows 10 1903 or greater and detects when your microphone is being accessed. Run it on any computer(s)[1] from which you join calls.
 
-## BusyLight.LightService
+## BusyLight.LightSubscriber
 
 This service illuminates your BlinkStick when microphone access[2] is detected. Run it on the Windows computer attached to the [BlinkStick Square](https://www.blinkstick.com/products/blinkstick-square). It will automatically illuminate the first two LEDs on the device for the duration of your call.
 

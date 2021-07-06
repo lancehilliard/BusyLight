@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ServiceProcess;
 
-namespace BusyLight.LightService {
+namespace BusyLight.LightSubscriber {
     static class Program {
         /// <summary>
         /// The main entry point for the application.

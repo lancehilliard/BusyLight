@@ -6,7 +6,7 @@ using System.Threading;
 using BusyLight.Core;
 using RabbitMQ.Client;
 
-namespace BusyLight.ActivityLoggingService {
+namespace BusyLight.ActivityPublisher {
     public partial class Service1 : ServiceBase {
         public Service1() {
             InitializeComponent();

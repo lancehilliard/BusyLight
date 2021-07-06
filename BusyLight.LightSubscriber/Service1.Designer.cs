@@ -1,5 +1,5 @@
 ﻿
-namespace BusyLight.LightService {
+namespace BusyLight.LightSubscriber {
     partial class Service1 {
         /// <summary> 
         /// Required designer variable.

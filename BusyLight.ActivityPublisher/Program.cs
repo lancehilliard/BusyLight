@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ServiceProcess;
 
-namespace BusyLight.ActivityLoggingService {
+namespace BusyLight.ActivityPublisher {
     static class Program {
         /// <summary>
         /// The main entry point for the application.

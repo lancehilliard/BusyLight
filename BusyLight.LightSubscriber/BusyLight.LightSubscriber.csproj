@@ -4,16 +4,16 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{6BF20779-971E-4F77-B6D6-2AAA24081B00}</ProjectGuid>
+    <ProjectGuid>{786640A5-1E43-4BF2-8CE8-261FB0083633}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>BusyLight.ActivityLoggingService</RootNamespace>
-    <AssemblyName>BusyLight.ActivityLoggingService</AssemblyName>
+    <RootNamespace>BusyLight.LightSubscriber</RootNamespace>
+    <AssemblyName>BusyLight.LightSubscriber</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>U:\BusyLight\ActivityLoggingService\</PublishUrl>
+    <PublishUrl>U:\BusyLight\LightService\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -23,7 +23,7 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>3</ApplicationRevision>
+    <ApplicationRevision>1</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -38,6 +38,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -47,6 +48,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -55,23 +57,26 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>39CF489FA86BBCCBBFB2A5C79DC2D2C87C4C4C28</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>6A94ECCD7DDBAEE5F7EF457DB1919D4A2764900D</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>BusyLight.ActivityLoggingService_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>BusyLight.LightService_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
-  <PropertyGroup>
-    <NoWin32Manifest>true</NoWin32Manifest>
-  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BlinkStickDotNet, Version=2.0.16.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BlinkStickDotNet.2.0.16\lib\net40\BlinkStickDotNet.dll</HintPath>
+    </Reference>
+    <Reference Include="HidSharp, Version=1.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HidSharp.1.5\lib\net35\HidSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="LibUsbDotNet, Version=2.2.8.104, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LibUsbDotNet.2.2.8\lib\LibUsbDotNet.dll</HintPath>
+    </Reference>
     <Reference Include="RabbitMQ.Client, Version=6.0.0.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
       <HintPath>..\packages\RabbitMQ.Client.6.2.2\lib\net461\RabbitMQ.Client.dll</HintPath>
-    </Reference>
-    <Reference Include="RestSharp">
-      <HintPath>C:\Users\lance.hilliard\.nuget\packages\restsharp\105.2.3\lib\net46\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -111,12 +116,12 @@
     <Content Include="App.override.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="BusyLight.ActivityLoggingService_TemporaryKey.pfx" />
+    <None Include="BusyLight.LightService_TemporaryKey.pfx" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BusyLight.Core\BusyLight.Core.csproj">
-      <Project>{3D5A82B6-FA10-4515-B5CD-B58CD9F77B90}</Project>
+      <Project>{3d5a82b6-fa10-4515-b5cd-b58cd9f77b90}</Project>
       <Name>BusyLight.Core</Name>
     </ProjectReference>
   </ItemGroup>

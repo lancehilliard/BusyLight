@@ -1,16 +1,16 @@
 ﻿using System;
+using System.Configuration;
+using System.Diagnostics.CodeAnalysis;
 using System.ServiceProcess;
+using System.Text;
 using System.Threading;
 using BlinkStickDotNet;
 using BusyLight.Core;
-using System.Configuration;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Constants = BusyLight.Core.Constants;
 
-namespace BusyLight.LightService {
+namespace BusyLight.LightSubscriber {
     public partial class Service1 : ServiceBase {
         Thread _messageThread;
         Thread _lightThread;

@@ -1,5 +1,5 @@
 ﻿
-namespace BusyLight.ActivityLoggingService {
+namespace BusyLight.ActivityPublisher {
     partial class Service1 {
         /// <summary> 
         /// Required designer variable.
