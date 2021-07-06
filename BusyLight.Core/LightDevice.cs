@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using BlinkStickDotNet;
 
 namespace BusyLight.Core {
-    public interface ILightDevice {
+    public interface ILightDevice : IDisposable {
         void TurnOffAllLights();
         void SetQuadrantColor(RgbColor color, Quadrant quadrant);
     }
@@ -31,7 +31,7 @@ namespace BusyLight.Core {
         }
     }
 
-    public class LightDevice {
+    public class LightDevice : IDisposable {
         readonly BlinkStick _device;
 
         protected LightDevice(BlinkStick device) {
@@ -46,6 +46,10 @@ namespace BusyLight.Core {
             else {
                 throw new NotSupportedException("Light device not available.");
             }
+        }
+
+        public void Dispose() {
+            _device?.Dispose();
         }
     }
 

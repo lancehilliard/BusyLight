@@ -65,8 +65,9 @@ namespace BusyLight.LightSubscriber {
         }
 
         protected override void OnStop() {
-            _messageThread.Abort();
-            _lightThread.Abort();
+            LightDevice?.Dispose();
+            _messageThread?.Abort();
+            _lightThread?.Abort();
         }
 
         internal void TestStartupAndStop()
