@@ -4,6 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.ServiceProcess;
 using System.Threading;
 using BusyLight.Core;
+using RabbitMQ.Client;
 
 namespace BusyLight.ActivityLoggingService {
     public partial class Service1 : ServiceBase {
@@ -12,7 +13,7 @@ namespace BusyLight.ActivityLoggingService {
         }
 
         static readonly IMicrophoneStatusChecker MicrophoneStatusChecker = new MicrophoneRegistryStatusChecker();
-        static readonly ActivityLogger ActivityLogger = new ActivityLogger(ConfigurationManager.AppSettings["RestDatabaseApiKey"], ConfigurationManager.AppSettings["RestBaseUrl"], ConfigurationManager.AppSettings["MicrophoneActivityRecordId"]);
+        static readonly ActivityLogger ActivityLogger = new ActivityLogger(new ConnectionFactory {Uri = new Uri(ConfigurationManager.AppSettings["MessageQueueUrl"])});
         Thread _thread;
 
         protected override void OnStart(string[] args) {
@@ -23,16 +24,18 @@ namespace BusyLight.ActivityLoggingService {
         [SuppressMessage("ReSharper", "FunctionNeverReturns", Justification = "Function runs in a background thread and is intended to run infinitely.")]
         void DoWork() {
             while (true) {
+                var secondsToWaitBeforeNextCheck = .25;
                 try {
                     var microphoneIsBeingUsed = MicrophoneStatusChecker.IsMicrophoneBeingUsed();
                     if (microphoneIsBeingUsed) {
                         ActivityLogger.LogMicrophoneUse();
+                        secondsToWaitBeforeNextCheck = 5;
                     }
                 }
                 catch (Exception e) {
                     Console.WriteLine(e);
                 }
-                Thread.Sleep(TimeSpan.FromSeconds(5));
+                Thread.Sleep(TimeSpan.FromSeconds(secondsToWaitBeforeNextCheck));
             }
         }
 

@@ -1,26 +1,24 @@
 ﻿using System;
-using RestSharp;
+using System.Globalization;
+using System.Text;
+using RabbitMQ.Client;
 
 namespace BusyLight.Core {
     public class ActivityLogger {
-        readonly string _databaseApiKey;
-        readonly string _restBaseUrl;
-        readonly string _microphoneActivityRecordId;
-
-        public ActivityLogger(string databaseApiKey, string restBaseUrl, string microphoneActivityRecordId) {
-            _databaseApiKey = databaseApiKey;
-            _restBaseUrl = restBaseUrl;
-            _microphoneActivityRecordId = microphoneActivityRecordId;
+        readonly ConnectionFactory _connectionFactory;
+        public ActivityLogger(ConnectionFactory connectionFactory) {
+            _connectionFactory = connectionFactory;
         }
 
         public void LogMicrophoneUse() {
-            var updateClient = new RestClient($"{_restBaseUrl}/activities/{_microphoneActivityRecordId}");
-            var updateRequest = new RestRequest(Method.PUT);
-            updateRequest.AddHeader("cache-control", "no-cache");
-            updateRequest.AddHeader("x-apikey", _databaseApiKey);
-            updateRequest.AddHeader("content-type", "application/json");
-            updateRequest.AddParameter("application/json", $@"{{""name"":""microphone"",""when"":""{DateTime.UtcNow}""}}", ParameterType.RequestBody);
-            updateClient.Execute(updateRequest);
+            using var connection = _connectionFactory.CreateConnection();
+            using var channel = connection.CreateModel();
+            var basicProperties = channel.CreateBasicProperties();
+            basicProperties.Type = "microphone";
+            channel.QueueDeclare(Constants.QueueName, durable: false, exclusive: false, autoDelete: true, null);
+            var secondsSince1970Utc = (int)(DateTime.UtcNow - Constants.Utc1970).TotalSeconds;
+            var data = Encoding.UTF8.GetBytes(secondsSince1970Utc.ToString(CultureInfo.InvariantCulture));
+            channel.BasicPublish(string.Empty, Constants.QueueName, basicProperties, data);
         }
     }
 }

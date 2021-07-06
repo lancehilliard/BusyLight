@@ -1,16 +1,20 @@
-﻿namespace BusyLight.Core {
-    public class DeviceChangerFactory {
-        readonly IActivityChecker _activityChecker;
-        readonly string _microphoneActiveColor;
+﻿using System;
 
-        public DeviceChangerFactory(IActivityChecker activityChecker, string microphoneActiveColor) {
-            _activityChecker = activityChecker;
-            _microphoneActiveColor = microphoneActiveColor;
+namespace BusyLight.Core {
+    public class DeviceChangerFactory {
+        readonly ILightDevice _device;
+        readonly string _deviceOnColor;
+        readonly int _assumeMaxSeconds;
+
+        public DeviceChangerFactory(ILightDevice device, string deviceOnColor, int assumeMaxSeconds) {
+            _device = device;
+            _deviceOnColor = deviceOnColor;
+            _assumeMaxSeconds = assumeMaxSeconds;
         }
 
-        public IDeviceChanger Create(ILightDevice device) {
-            var isMicrophoneActive = _activityChecker.IsMicrophoneActive();
-            var result = isMicrophoneActive ? (IDeviceChanger)new OnDeviceChanger(device, _microphoneActiveColor) : new OffDeviceChanger(device);
+        public IDeviceChanger Create(TimeSpan timeSinceLastMessage) {
+            bool deviceShouldBeOn = timeSinceLastMessage.TotalSeconds <= _assumeMaxSeconds;
+            var result = deviceShouldBeOn ? (IDeviceChanger)new OnDeviceChanger(_device, _deviceOnColor) : new OffDeviceChanger(_device);
             return result;
         }
     }
