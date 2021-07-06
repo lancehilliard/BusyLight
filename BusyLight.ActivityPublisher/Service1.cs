@@ -14,7 +14,7 @@ namespace BusyLight.ActivityPublisher {
 
         static readonly int PublishIntervalSeconds = Convert.ToInt32(ConfigurationManager.AppSettings["PublishIntervalSeconds"]);
         static readonly IMicrophoneStatusChecker MicrophoneStatusChecker = new MicrophoneRegistryStatusChecker();
-        static readonly ActivityLogger ActivityLogger = new ActivityLogger(new ConnectionFactory {Uri = new Uri(ConfigurationManager.AppSettings["MessageQueueUrl"])});
+        static readonly Core.ActivityPublisher ActivityPublisher = new Core.ActivityPublisher(new ConnectionFactory {Uri = new Uri(ConfigurationManager.AppSettings["MessageQueueUrl"])});
         Thread _thread;
 
         protected override void OnStart(string[] args) {
@@ -29,7 +29,7 @@ namespace BusyLight.ActivityPublisher {
                 try {
                     var microphoneIsBeingUsed = MicrophoneStatusChecker.IsMicrophoneBeingUsed();
                     if (microphoneIsBeingUsed) {
-                        ActivityLogger.LogMicrophoneUse();
+                        ActivityPublisher.PublishMicrophoneUse();
                         secondsToWaitBeforeNextCheck = PublishIntervalSeconds;
                     }
                 }

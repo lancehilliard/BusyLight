@@ -70,7 +70,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="DeviceChanger.cs" />
     <Compile Include="DeviceChangerFactory.cs" />
-    <Compile Include="ActivityLogger.cs" />
+    <Compile Include="ActivityPublisher.cs" />
     <Compile Include="LightDevice.cs" />
     <Compile Include="MicrophoneRegistryStatusChecker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

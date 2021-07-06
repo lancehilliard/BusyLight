@@ -4,13 +4,13 @@ using System.Text;
 using RabbitMQ.Client;
 
 namespace BusyLight.Core {
-    public class ActivityLogger {
+    public class ActivityPublisher {
         readonly ConnectionFactory _connectionFactory;
-        public ActivityLogger(ConnectionFactory connectionFactory) {
+        public ActivityPublisher(ConnectionFactory connectionFactory) {
             _connectionFactory = connectionFactory;
         }
 
-        public void LogMicrophoneUse() {
+        public void PublishMicrophoneUse() {
             using var connection = _connectionFactory.CreateConnection();
             using var channel = connection.CreateModel();
             var basicProperties = channel.CreateBasicProperties();
