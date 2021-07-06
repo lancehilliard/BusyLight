@@ -1,6 +1,6 @@
 # BusyLight
 
-If you want to _automatically_ and _visually_ alert others nearby that you're busy, then BusyLight can help. The use case is a single desk with (potentially) multiple computers -- and maybe a mobile phone?[1] -- which are all intermittently used to perform work that, ideally, wouldn't be interrupted by others nearby, such that one light might convey "busy", no matter which machine was driving the work.
+If you want to _automatically_ and _visually_ alert others nearby that you're busy, then BusyLight can help. The use case is a single desk with (potentially) multiple computers -- and maybe a mobile phone?[1] -- which are all intermittently used to perform work that, ideally, wouldn't be interrupted by others nearby, such that a single might convey "busy", no matter which machine was driving the work.
 
 So far, it only tracks calls (active/ongoing voice and video calls, to be precise; what else would you like it to track?).
 
@@ -19,6 +19,10 @@ This service illuminates your BlinkStick when microphone access[2] is detected. 
 * LightService expects a [BlinkStick Square](https://www.blinkstick.com/products/blinkstick-square) plugged into the machine.
 * Both services expect a [message queue](https://github.com/lancehilliard/BusyLight/wiki/Messaging).
 * Both services require some [configuration](https://github.com/lancehilliard/BusyLight/wiki/Configuration).
+
+## Running the Software
+
+See [Running the Software](https://github.com/lancehilliard/BusyLight/wiki/Running-the-Software) to run the services locally.
 
 ### Notes
 * [1] Are you working from your mobile phone, too? Check our [Mobile wiki page](https://github.com/lancehilliard/BusyLight/wiki/Mobile) for ideas!
