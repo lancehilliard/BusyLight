@@ -18,6 +18,8 @@ jobs:
       
     - name: Setup Nuget.exe
       uses: warrenbuckley/Setup-Nuget@v1
+      env:
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
 
     - name: Nuget restore
       run: nuget restore BusyLight.sln
