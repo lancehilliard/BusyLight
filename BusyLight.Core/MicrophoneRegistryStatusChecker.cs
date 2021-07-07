@@ -13,7 +13,7 @@ namespace BusyLight.Core {
         public bool IsMicrophoneBeingUsed() {
             var result = false;
             var registryKeys = new List<RegistryKey>{Registry.LocalMachine,Registry.CurrentUser};
-            foreach (var registryKey in registryKeys.Where(x => !result)) {
+            foreach (var registryKey in registryKeys.Where(_ => !result)) {
                 result = IsMicrophoneBeingUsedByChildren(registryKey, RootSubKey);
             }
             return result;
@@ -26,7 +26,7 @@ namespace BusyLight.Core {
                 if (parentSubKey != null)
                 {
                     var childSubKeyNames = parentSubKey.GetSubKeyNames();
-                    foreach (var childSubKeyName in childSubKeyNames.Where(x=>!result))
+                    foreach (var childSubKeyName in childSubKeyNames.Where(_=>!result))
                     {
                         var childSubKeyPath = $@"{parentSubKeyName}\{childSubKeyName}";
                         using (var childSubKey = Registry.CurrentUser.OpenSubKey(childSubKeyPath, RegistryKeyPermissionCheck.ReadSubTree)) {

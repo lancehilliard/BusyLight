@@ -48,7 +48,7 @@ namespace BusyLight.LightSubscriber {
             using var channel = connection.CreateModel();
             channel.QueueDeclare(Constants.QueueName, durable: false, exclusive: false, autoDelete: true, null);
             var consumer = new EventingBasicConsumer(channel);
-            consumer.Received += (model, deliveryEventArgs) => {
+            consumer.Received += (_, deliveryEventArgs) => {
                 var body = deliveryEventArgs.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
                 var secondsSince1970Utc = Convert.ToInt64(message);
