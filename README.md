@@ -1,6 +1,8 @@
-# BusyLight
+# BusyLight 💡 👍
 
 If you want to _automatically_ and _visually_ alert others nearby that you're busy, then BusyLight can help.
+
+[![CI](https://github.com/lancehilliard/BusyLight/actions/workflows/main.yml/badge.svg)](https://github.com/lancehilliard/BusyLight/actions/workflows/main.yml)
 
 ## Use Case
 
