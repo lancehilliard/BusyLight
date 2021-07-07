@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+      
+    - name: Setup Nuget.exe
+      uses: warrenbuckley/Setup-Nuget@v1
+      env:
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+
+    - name: Nuget restore
+      run: nuget restore BusyLight.sln
+      
+    - name: Setup MSBuild.exe
+      uses: warrenbuckley/Setup-MSBuild@v1
+      env:
+        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+
+    - name: MSBuild
+      run: msbuild BusyLight.Specs\BusyLight.Specs.csproj
+      
+    - name: Setup VSTest.exe
+      uses: Malcolmnixon/Setup-VSTest@v4
+
+    - name: VSTest
+      run: vstest.console BusyLight.Specs\bin\Debug\BusyLight.Specs.dll
