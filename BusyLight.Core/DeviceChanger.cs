@@ -1,6 +1,4 @@
-﻿using BlinkStickDotNet;
-
-namespace BusyLight.Core {
+﻿namespace BusyLight.Core {
     public interface IDeviceChanger {
         void Change();
     }
