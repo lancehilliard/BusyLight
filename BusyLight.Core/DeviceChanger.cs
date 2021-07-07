@@ -15,7 +15,7 @@ namespace BusyLight.Core {
         }
 
         public void Change() {
-            _device.SetQuadrantColor(RgbColor.FromString(_color), Quadrant.First);
+            _device.SetQuadrantColor(_color, Quadrant.First);
         }
     }
 
@@ -26,7 +26,7 @@ namespace BusyLight.Core {
         }
 
         public void Change() {
-            _device.TurnOffAllLights();
+            _device.TurnOffQuadrant(Quadrant.First);
         }
     }
 }

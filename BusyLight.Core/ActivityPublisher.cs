@@ -4,7 +4,11 @@ using System.Text;
 using RabbitMQ.Client;
 
 namespace BusyLight.Core {
-    public class ActivityPublisher {
+    public interface IActivityPublisher {
+        void PublishMicrophoneUse();
+    }
+
+    public class ActivityPublisher : IActivityPublisher {
         readonly ConnectionFactory _connectionFactory;
         public ActivityPublisher(ConnectionFactory connectionFactory) {
             _connectionFactory = connectionFactory;

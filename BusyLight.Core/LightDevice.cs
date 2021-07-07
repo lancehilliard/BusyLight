@@ -4,12 +4,12 @@ using BlinkStickDotNet;
 
 namespace BusyLight.Core {
     public interface ILightDevice : IDisposable {
-        void TurnOffAllLights();
-        void SetQuadrantColor(RgbColor color, Quadrant quadrant);
+        void SetQuadrantColor(string color, Quadrant quadrant);
+        void TurnOffQuadrant(Quadrant first);
     }
 
     public class SquareLightDevice : LightDevice, ILightDevice {
-        static readonly Dictionary<Quadrant, byte[]> QuadrantIndexes = new Dictionary<Quadrant, byte[]> {
+        static readonly Dictionary<Quadrant, byte[]> QuadrantIndexes = new() {
             {Quadrant.First, new byte[]{0,1}}
             , {Quadrant.Second, new byte[]{2,3}}
             , {Quadrant.Third, new byte[]{4,5}}
@@ -18,14 +18,14 @@ namespace BusyLight.Core {
         public SquareLightDevice(BlinkStick device) : base(device) {
         }
 
-        public void TurnOffAllLights() {
-            Do(x => x.SetColors(0, new List<byte>{0,0,0,0,0,0,0,0}.ToArray()));
+        public void TurnOffQuadrant(Quadrant quadrant) {
+            SetQuadrantColor("black", quadrant);
         }
 
-        public void SetQuadrantColor(RgbColor color, Quadrant quadrant) {
+        public void SetQuadrantColor(string color, Quadrant quadrant) {
             Do(x => {
                 foreach (var index in QuadrantIndexes[quadrant]) {
-                    x.SetColor(0, index, color);
+                    x.SetColor(0, index, RgbColor.FromString(color));
                 }
             });
         }

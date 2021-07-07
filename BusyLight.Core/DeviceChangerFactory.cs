@@ -13,7 +13,7 @@ namespace BusyLight.Core {
         }
 
         public IDeviceChanger Create(TimeSpan timeSinceLastMessage) {
-            bool deviceShouldBeOn = timeSinceLastMessage.TotalSeconds <= _assumeMaxSeconds;
+            var deviceShouldBeOn = timeSinceLastMessage.TotalSeconds <= _assumeMaxSeconds;
             var result = deviceShouldBeOn ? (IDeviceChanger)new OnDeviceChanger(_device, _deviceOnColor) : new OffDeviceChanger(_device);
             return result;
         }

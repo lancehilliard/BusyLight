@@ -27,14 +27,14 @@ namespace BusyLight.LightSubscriber {
         DateTime _lastMessageWhenUtc;
 
         protected override void OnStart(string[] args) {
-            _messageThread = new Thread(DoWork) {IsBackground = true};
+            _messageThread = new Thread(DoMessagingWork) {IsBackground = true};
             _messageThread.Start();
-            _lightThread = new Thread(DoLight) {IsBackground = true};
+            _lightThread = new Thread(DoDeviceWork) {IsBackground = true};
             _lightThread.Start();
         }
 
         [SuppressMessage("ReSharper", "FunctionNeverReturns", Justification = "Function runs in a background thread and is intended to run infinitely.")]
-        void DoLight() {
+        void DoDeviceWork() {
             while (true) {
                 var timeSinceLastMessage = DateTime.UtcNow - _lastMessageWhenUtc;
                 var deviceChanger = DeviceChangerFactory.Create(timeSinceLastMessage);
@@ -43,10 +43,10 @@ namespace BusyLight.LightSubscriber {
             }
         }
 
-        void DoWork() {
+        void DoMessagingWork() {
             using var connection = ConnectionFactory.CreateConnection();
             using var channel = connection.CreateModel();
-            channel.QueueDeclare(Core.Constants.QueueName, durable: false, exclusive: false, autoDelete: true, null);
+            channel.QueueDeclare(Constants.QueueName, durable: false, exclusive: false, autoDelete: true, null);
             var consumer = new EventingBasicConsumer(channel);
             consumer.Received += (model, deliveryEventArgs) => {
                 var body = deliveryEventArgs.Body.ToArray();
@@ -60,7 +60,7 @@ namespace BusyLight.LightSubscriber {
                 // ReSharper disable once AccessToDisposedClosure
                 channel.BasicAck(deliveryEventArgs.DeliveryTag, false);
             };
-            channel.BasicConsume(consumer, Core.Constants.QueueName);
+            channel.BasicConsume(consumer, Constants.QueueName);
             ResetEvent.WaitOne();
         }
 
