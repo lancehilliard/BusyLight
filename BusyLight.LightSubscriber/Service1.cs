@@ -49,14 +49,9 @@ namespace BusyLight.LightSubscriber {
             channel.QueueDeclare(Constants.QueueName, durable: false, exclusive: false, autoDelete: true, null);
             var consumer = new EventingBasicConsumer(channel);
             consumer.Received += (_, deliveryEventArgs) => {
-                var body = deliveryEventArgs.Body.ToArray();
-                var message = Encoding.UTF8.GetString(body);
-                var secondsSince1970Utc = Convert.ToInt64(message);
-                var whenUtc = Constants.Utc1970.AddSeconds(secondsSince1970Utc);
-                var totalSeconds = (DateTime.UtcNow - whenUtc).TotalSeconds;
-                if (Math.Abs(totalSeconds) < AssumeMaxSeconds) {
-                    _lastMessageWhenUtc = DateTime.UtcNow;
-                }
+                //var body = deliveryEventArgs.Body.ToArray();
+                //var message = Encoding.UTF8.GetString(body);
+                _lastMessageWhenUtc = DateTime.UtcNow;
                 // ReSharper disable once AccessToDisposedClosure
                 channel.BasicAck(deliveryEventArgs.DeliveryTag, false);
             };

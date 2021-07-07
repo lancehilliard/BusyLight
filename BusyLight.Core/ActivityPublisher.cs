@@ -20,8 +20,8 @@ namespace BusyLight.Core {
             var basicProperties = channel.CreateBasicProperties();
             basicProperties.Type = "microphone";
             channel.QueueDeclare(Constants.QueueName, durable: false, exclusive: false, autoDelete: true, null);
-            var secondsSince1970Utc = (int)(DateTime.UtcNow - Constants.Utc1970).TotalSeconds;
-            var data = Encoding.UTF8.GetBytes(secondsSince1970Utc.ToString(CultureInfo.InvariantCulture));
+            var message = string.Empty;
+            var data = Encoding.UTF8.GetBytes(message);
             channel.BasicPublish(string.Empty, Constants.QueueName, basicProperties, data);
         }
     }
