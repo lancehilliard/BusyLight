@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusyLight.Specs", "BusyLigh
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "BusyLight.LightSubscriber.Install", "BusyLight.LightSubscriber.Install\BusyLight.LightSubscriber.Install.vdproj", "{2CBEBDC1-B7DB-4EDB-82B1-F0EC4A7FA9BB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusyLight.Client", "BusyLight.Client\BusyLight.Client.csproj", "{5F11C6F9-74CF-4D38-B78D-7A5C34078BD8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,10 @@ Global
 		{7CF9D504-1DAF-4427-8EBA-92068321EF84}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2CBEBDC1-B7DB-4EDB-82B1-F0EC4A7FA9BB}.Debug|Any CPU.ActiveCfg = Debug
 		{2CBEBDC1-B7DB-4EDB-82B1-F0EC4A7FA9BB}.Release|Any CPU.ActiveCfg = Release
+		{5F11C6F9-74CF-4D38-B78D-7A5C34078BD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F11C6F9-74CF-4D38-B78D-7A5C34078BD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F11C6F9-74CF-4D38-B78D-7A5C34078BD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F11C6F9-74CF-4D38-B78D-7A5C34078BD8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
