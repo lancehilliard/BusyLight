@@ -51,7 +51,7 @@ namespace BusyLight.LightSubscriber {
             consumer.Received += (_, deliveryEventArgs) => {
                 //var body = deliveryEventArgs.Body.ToArray();
                 //var message = Encoding.UTF8.GetString(body);
-                _lastMessageWhenUtc = DateTime.UtcNow;
+                _lastMessageWhenUtc = DateTime.UtcNow > _lastMessageWhenUtc ? DateTime.UtcNow : _lastMessageWhenUtc;
                 // ReSharper disable once AccessToDisposedClosure
                 channel.BasicAck(deliveryEventArgs.DeliveryTag, false);
             };
