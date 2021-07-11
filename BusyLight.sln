@@ -5,15 +5,11 @@ VisualStudioVersion = 16.0.31313.79
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusyLight.Core", "BusyLight.Core\BusyLight.Core.csproj", "{3D5A82B6-FA10-4515-B5CD-B58CD9F77B90}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusyLight.ActivityPublisher", "BusyLight.ActivityPublisher\BusyLight.ActivityPublisher.csproj", "{6BF20779-971E-4F77-B6D6-2AAA24081B00}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusyLight.LightSubscriber", "BusyLight.LightSubscriber\BusyLight.LightSubscriber.csproj", "{786640A5-1E43-4BF2-8CE8-261FB0083633}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusyLight.Specs", "BusyLight.Specs\BusyLight.Specs.csproj", "{7CF9D504-1DAF-4427-8EBA-92068321EF84}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "BusyLight.LightSubscriber.Install", "BusyLight.LightSubscriber.Install\BusyLight.LightSubscriber.Install.vdproj", "{2CBEBDC1-B7DB-4EDB-82B1-F0EC4A7FA9BB}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusyLight.Client", "BusyLight.Client\BusyLight.Client.csproj", "{5F11C6F9-74CF-4D38-B78D-7A5C34078BD8}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "BusyLight.Install", "BusyLight.Install\BusyLight.Install.vdproj", "{C223BE45-6F98-4917-B8D7-9708BC576B42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,24 +21,18 @@ Global
 		{3D5A82B6-FA10-4515-B5CD-B58CD9F77B90}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D5A82B6-FA10-4515-B5CD-B58CD9F77B90}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D5A82B6-FA10-4515-B5CD-B58CD9F77B90}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6BF20779-971E-4F77-B6D6-2AAA24081B00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6BF20779-971E-4F77-B6D6-2AAA24081B00}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6BF20779-971E-4F77-B6D6-2AAA24081B00}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6BF20779-971E-4F77-B6D6-2AAA24081B00}.Release|Any CPU.Build.0 = Release|Any CPU
-		{786640A5-1E43-4BF2-8CE8-261FB0083633}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{786640A5-1E43-4BF2-8CE8-261FB0083633}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{786640A5-1E43-4BF2-8CE8-261FB0083633}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{786640A5-1E43-4BF2-8CE8-261FB0083633}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7CF9D504-1DAF-4427-8EBA-92068321EF84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7CF9D504-1DAF-4427-8EBA-92068321EF84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7CF9D504-1DAF-4427-8EBA-92068321EF84}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7CF9D504-1DAF-4427-8EBA-92068321EF84}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2CBEBDC1-B7DB-4EDB-82B1-F0EC4A7FA9BB}.Debug|Any CPU.ActiveCfg = Debug
-		{2CBEBDC1-B7DB-4EDB-82B1-F0EC4A7FA9BB}.Release|Any CPU.ActiveCfg = Release
 		{5F11C6F9-74CF-4D38-B78D-7A5C34078BD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5F11C6F9-74CF-4D38-B78D-7A5C34078BD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F11C6F9-74CF-4D38-B78D-7A5C34078BD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F11C6F9-74CF-4D38-B78D-7A5C34078BD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C223BE45-6F98-4917-B8D7-9708BC576B42}.Debug|Any CPU.ActiveCfg = Debug
+		{C223BE45-6F98-4917-B8D7-9708BC576B42}.Debug|Any CPU.Build.0 = Debug
+		{C223BE45-6F98-4917-B8D7-9708BC576B42}.Release|Any CPU.ActiveCfg = Release
+		{C223BE45-6F98-4917-B8D7-9708BC576B42}.Release|Any CPU.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -3,7 +3,7 @@
 "VSVersion" = "3:800"
 "ProjectType" = "8:{978C614F-708E-4E1A-B201-565925725DBA}"
 "IsWebType" = "8:FALSE"
-"ProjectName" = "8:BusyLight.LightSubscriber.Install"
+"ProjectName" = "8:BusyLight.Install"
 "LanguageId" = "3:1033"
 "CodePage" = "3:1252"
 "UILanguageId" = "3:1033"
@@ -22,7 +22,7 @@
         "Entry"
         {
         "MsmKey" = "8:_1BE2D7875E5D2A683E7D9A782532C1D9"
-        "OwnerKey" = "8:_F1F154C147E448C5AE5B2F6036FBC965"
+        "OwnerKey" = "8:_F25CD16305E647FEB272BA4E1686C6C6"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -40,13 +40,13 @@
         "Entry"
         {
         "MsmKey" = "8:_258459925C19514CAE9BBD6CA8E0CB49"
-        "OwnerKey" = "8:_F1F154C147E448C5AE5B2F6036FBC965"
+        "OwnerKey" = "8:_F25CD16305E647FEB272BA4E1686C6C6"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_258459925C19514CAE9BBD6CA8E0CB49"
-        "OwnerKey" = "8:_615E57EB5513D4296A1BF2A5DCBFBAEE"
+        "OwnerKey" = "8:_78F284848F22FFBEB681928787701CA8"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -58,13 +58,7 @@
         "Entry"
         {
         "MsmKey" = "8:_5865AA4A992141B8F85B5B81FDAC0DD7"
-        "OwnerKey" = "8:_F1F154C147E448C5AE5B2F6036FBC965"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_615E57EB5513D4296A1BF2A5DCBFBAEE"
-        "OwnerKey" = "8:_F1F154C147E448C5AE5B2F6036FBC965"
+        "OwnerKey" = "8:_F25CD16305E647FEB272BA4E1686C6C6"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -76,19 +70,25 @@
         "Entry"
         {
         "MsmKey" = "8:_6D925A5AE42FEF67F1511A0C20DCBCB9"
-        "OwnerKey" = "8:_F1F154C147E448C5AE5B2F6036FBC965"
+        "OwnerKey" = "8:_F25CD16305E647FEB272BA4E1686C6C6"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_730653D008E26A58B975984DF9567CFF"
-        "OwnerKey" = "8:_615E57EB5513D4296A1BF2A5DCBFBAEE"
+        "OwnerKey" = "8:_78F284848F22FFBEB681928787701CA8"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_730653D008E26A58B975984DF9567CFF"
-        "OwnerKey" = "8:_F1F154C147E448C5AE5B2F6036FBC965"
+        "OwnerKey" = "8:_F25CD16305E647FEB272BA4E1686C6C6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_78F284848F22FFBEB681928787701CA8"
+        "OwnerKey" = "8:_F25CD16305E647FEB272BA4E1686C6C6"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -100,7 +100,7 @@
         "Entry"
         {
         "MsmKey" = "8:_84BE68487DB8DF690A1004543B0522DF"
-        "OwnerKey" = "8:_F1F154C147E448C5AE5B2F6036FBC965"
+        "OwnerKey" = "8:_F25CD16305E647FEB272BA4E1686C6C6"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -124,7 +124,13 @@
         "Entry"
         {
         "MsmKey" = "8:_B1C2E41FF55B56C97982E0BB9C491FDC"
-        "OwnerKey" = "8:_F1F154C147E448C5AE5B2F6036FBC965"
+        "OwnerKey" = "8:_F25CD16305E647FEB272BA4E1686C6C6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_BA47E5C9C56754F3FEEC6DAE9A45C435"
+        "OwnerKey" = "8:_F25CD16305E647FEB272BA4E1686C6C6"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -136,7 +142,7 @@
         "Entry"
         {
         "MsmKey" = "8:_D368CDC18429A25CF183103D2B9DE8A1"
-        "OwnerKey" = "8:_F1F154C147E448C5AE5B2F6036FBC965"
+        "OwnerKey" = "8:_F25CD16305E647FEB272BA4E1686C6C6"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -148,7 +154,7 @@
         "Entry"
         {
         "MsmKey" = "8:_ED379F04F7CF39CF5214B13F67FCBCAA"
-        "OwnerKey" = "8:_F1F154C147E448C5AE5B2F6036FBC965"
+        "OwnerKey" = "8:_F25CD16305E647FEB272BA4E1686C6C6"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -165,26 +171,26 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_F1F154C147E448C5AE5B2F6036FBC965"
+        "MsmKey" = "8:_F25CD16305E647FEB272BA4E1686C6C6"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_F63BEC5DA173664C0011D59B0E78800C"
-        "OwnerKey" = "8:_615E57EB5513D4296A1BF2A5DCBFBAEE"
+        "OwnerKey" = "8:_78F284848F22FFBEB681928787701CA8"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_F63BEC5DA173664C0011D59B0E78800C"
-        "OwnerKey" = "8:_F1F154C147E448C5AE5B2F6036FBC965"
+        "OwnerKey" = "8:_F25CD16305E647FEB272BA4E1686C6C6"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_F1F154C147E448C5AE5B2F6036FBC965"
+        "OwnerKey" = "8:_BA47E5C9C56754F3FEEC6DAE9A45C435"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -250,7 +256,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_615E57EB5513D4296A1BF2A5DCBFBAEE"
+        "OwnerKey" = "8:_78F284848F22FFBEB681928787701CA8"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_F25CD16305E647FEB272BA4E1686C6C6"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -261,7 +273,7 @@
         "DisplayName" = "8:Debug"
         "IsDebugOnly" = "11:TRUE"
         "IsReleaseOnly" = "11:FALSE"
-        "OutputFilename" = "8:Debug\\BusyLight.LightSubscriber.Install.msi"
+        "OutputFilename" = "8:Debug\\BusyLight.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -293,7 +305,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\BusyLight.LightSubscriber.msi"
+        "OutputFilename" = "8:Release\\BusyLight.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -303,68 +315,28 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
+            }
         }
     }
     "Deployable"
     {
         "CustomAction"
         {
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_1240CEB057E4459C93A4FDEC2D0CAB58"
-            {
-            "Name" = "8:Primary output from BusyLight.LightSubscriber (Active)"
-            "Condition" = "8:"
-            "Object" = "8:_F1F154C147E448C5AE5B2F6036FBC965"
-            "FileType" = "3:2"
-            "InstallAction" = "3:4"
-            "Arguments" = "8:"
-            "EntryPoint" = "8:"
-            "Sequence" = "3:1"
-            "Identifier" = "8:_EFF98660_BC0D_4CFF_9F39_C2735590CD35"
-            "InstallerClass" = "11:TRUE"
-            "CustomActionData" = "8:"
-            }
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_4E9978F24979496088A8ACF08AD35AB8"
-            {
-            "Name" = "8:Primary output from BusyLight.LightSubscriber (Active)"
-            "Condition" = "8:"
-            "Object" = "8:_F1F154C147E448C5AE5B2F6036FBC965"
-            "FileType" = "3:2"
-            "InstallAction" = "3:3"
-            "Arguments" = "8:"
-            "EntryPoint" = "8:"
-            "Sequence" = "3:1"
-            "Identifier" = "8:_6548736F_9F1C_44A4_B834_647390368758"
-            "InstallerClass" = "11:TRUE"
-            "CustomActionData" = "8:"
-            }
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_72B1EFEDC38A44BF9A12033F50B14672"
-            {
-            "Name" = "8:Primary output from BusyLight.LightSubscriber (Active)"
-            "Condition" = "8:"
-            "Object" = "8:_F1F154C147E448C5AE5B2F6036FBC965"
-            "FileType" = "3:2"
-            "InstallAction" = "3:1"
-            "Arguments" = "8:"
-            "EntryPoint" = "8:"
-            "Sequence" = "3:1"
-            "Identifier" = "8:_642B99C9_60A7_4678_860D_12BAAB3E24DA"
-            "InstallerClass" = "11:TRUE"
-            "CustomActionData" = "8:"
-            }
-            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_9918104B6D194F3CAF20DDCBD591C481"
-            {
-            "Name" = "8:Primary output from BusyLight.LightSubscriber (Active)"
-            "Condition" = "8:"
-            "Object" = "8:_F1F154C147E448C5AE5B2F6036FBC965"
-            "FileType" = "3:2"
-            "InstallAction" = "3:2"
-            "Arguments" = "8:"
-            "EntryPoint" = "8:"
-            "Sequence" = "3:1"
-            "Identifier" = "8:_D39D28AB_2BDF_4771_8C43_D8748D4F0E5D"
-            "InstallerClass" = "11:TRUE"
-            "CustomActionData" = "8:"
-            }
         }
         "DefaultFeature"
         {
@@ -481,37 +453,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_615E57EB5513D4296A1BF2A5DCBFBAEE"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:BusyLight.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_615E57EB5513D4296A1BF2A5DCBFBAEE"
-                    {
-                    "Name" = "8:BusyLight.Core.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:BusyLight.Core.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_AA87F92814614F7B8274DF0B95BC8E49"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6D925A5AE42FEF67F1511A0C20DCBCB9"
             {
             "AssemblyRegister" = "3:1"
@@ -557,6 +498,37 @@
                     }
                 }
             "SourcePath" = "8:BlinkStickDotNet.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_AA87F92814614F7B8274DF0B95BC8E49"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_78F284848F22FFBEB681928787701CA8"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:BusyLight.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_78F284848F22FFBEB681928787701CA8"
+                    {
+                    "Name" = "8:BusyLight.Core.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:BusyLight.Core.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_AA87F92814614F7B8274DF0B95BC8E49"
@@ -639,6 +611,37 @@
                     }
                 }
             "SourcePath" = "8:System.Threading.Channels.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_AA87F92814614F7B8274DF0B95BC8E49"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_BA47E5C9C56754F3FEEC6DAE9A45C435"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:System.Net.Http, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
+                "ScatterAssemblies"
+                {
+                    "_BA47E5C9C56754F3FEEC6DAE9A45C435"
+                    {
+                    "Name" = "8:System.Net.Http.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:System.Net.Http.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_AA87F92814614F7B8274DF0B95BC8E49"
@@ -804,7 +807,7 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:BusyLight.LightSubscriber"
+        "ProductName" = "8:BusyLight"
         "ProductCode" = "8:{0C3A5A82-F4A8-40CC-94F0-F2D86639E117}"
         "PackageCode" = "8:{C014E07A-CAAE-4B63-8B30-DF83664AF19C}"
         "UpgradeCode" = "8:{318CFE13-B277-40A6-B247-D2C1A313A841}"
@@ -817,11 +820,11 @@
         "Manufacturer" = "8:DigitalCreations"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
-        "Title" = "8:BusyLight.LightSubscriber"
+        "Title" = "8:BusyLight"
         "Subject" = "8:"
         "ARPCONTACT" = "8:Lance Hilliard"
         "Keywords" = "8:"
-        "ARPCOMMENTS" = "8:Installs BusyLight.LightSubscriber, the service which controls your BlinkStick and accepts activity messages."
+        "ARPCOMMENTS" = "8:Installs BusyLight, to control your BlinkStick."
         "ARPURLINFOABOUT" = "8:"
         "ARPPRODUCTICON" = "8:"
         "ARPIconIndex" = "3:0"
@@ -1325,9 +1328,9 @@
         }
         "ProjectOutput"
         {
-            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_F1F154C147E448C5AE5B2F6036FBC965"
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_F25CD16305E647FEB272BA4E1686C6C6"
             {
-            "SourcePath" = "8:..\\BusyLight.LightSubscriber\\obj\\Release\\BusyLight.LightSubscriber.exe"
+            "SourcePath" = "8:..\\BusyLight.Client\\obj\\Release\\BusyLight.Client.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_AA87F92814614F7B8274DF0B95BC8E49"
@@ -1345,9 +1348,9 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             "ProjectOutputGroupRegister" = "3:1"
-            "OutputConfiguration" = "8:"
+            "OutputConfiguration" = "8:Release|Any CPU"
             "OutputGroupCanonicalName" = "8:Built"
-            "OutputProjectGuid" = "8:{786640A5-1E43-4BF2-8CE8-261FB0083633}"
+            "OutputProjectGuid" = "8:{5F11C6F9-74CF-4D38-B78D-7A5C34078BD8}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"
                 {
