@@ -27,6 +27,7 @@ namespace BusyLight.Client {
         static readonly ManualResetEvent ResetEvent = new(false);
         readonly ILogger _logger;
         DateTime _lastMessageWhenUtc;
+        static readonly int LogDisplayLength = 25000;
 
         public Form1() {
             InitializeComponent();
@@ -49,7 +50,8 @@ namespace BusyLight.Client {
         }
 
         protected override void OnClosing(CancelEventArgs e) {
-            WindowState = FormWindowState.Minimized;
+            //WindowState = FormWindowState.Minimized;
+            Hide();
             e.Cancel = true;
         }
 
@@ -107,7 +109,7 @@ namespace BusyLight.Client {
                 string result = null;
                 textBox1.Invoke(new MethodInvoker(GetValue));
                 return result;
-                void GetValue() => result = textBox1.Text.Substring(0, textBox1.Text.Length > 5000 ? 5000 : textBox1.Text.Length);
+                void GetValue() => result = textBox1.Text.Substring(0, textBox1.Text.Length > LogDisplayLength ? LogDisplayLength : textBox1.Text.Length);
             }
             set {
                 textBox1.Invoke(new MethodInvoker(SetValue));
@@ -124,15 +126,21 @@ namespace BusyLight.Client {
         }
 
         void openStripMenuItem_Click(object sender, EventArgs e) {
-            WindowState = FormWindowState.Normal;
+            ShowWindow();
+        }
+
+        void ShowWindow() {
             var activeColor = _activeColorGetter.Get();
             colorDialog1.Color = activeColor;
             colorPanel.BackColor = activeColor;
+            WindowState = FormWindowState.Normal;
+            Show();
+            Activate();
         }
 
         void notifyIcon1_MouseClick(object sender, MouseEventArgs e) {
             if (e.Button == MouseButtons.Left) {
-                WindowState = FormWindowState.Normal;
+                ShowWindow();
             }
         }
 
