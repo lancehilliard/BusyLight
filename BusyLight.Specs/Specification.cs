@@ -1,4 +1,5 @@
-﻿using BusyLight.Core;
+﻿using System.Drawing;
+using BusyLight.Core;
 using Moq;
 
 namespace BusyLight.Specs {
@@ -6,10 +7,11 @@ namespace BusyLight.Specs {
         protected TSut Sut;
 
         protected readonly Mock<ILightDevice> LightDeviceFake = new();
+        protected readonly Mock<IActiveColorGetter> ActiveColorGetterFake = new();
         protected readonly Mock<IMicrophoneStatusChecker> MicrophoneStatusCheckerFake = new();
         protected readonly Mock<IActivityPublisher> ActivityPublisherFake = new();
 
-        protected readonly string ColorNameValue = "red";
+        protected readonly Color ColorValue = Color.Red;
         protected readonly int AssumeMaxSecondsValue = 42;
     }
 

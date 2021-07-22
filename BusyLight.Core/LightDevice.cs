@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using BlinkStickDotNet;
 
 namespace BusyLight.Core {
     public interface ILightDevice : IDisposable {
-        void SetQuadrantColor(string color, Quadrant quadrant);
+        void SetQuadrantColor(Color color, Quadrant quadrant);
         void TurnOffQuadrant(Quadrant first);
     }
 
@@ -19,13 +20,14 @@ namespace BusyLight.Core {
         }
 
         public void TurnOffQuadrant(Quadrant quadrant) {
-            SetQuadrantColor("black", quadrant);
+            SetQuadrantColor(Color.Black, quadrant);
         }
 
-        public void SetQuadrantColor(string color, Quadrant quadrant) {
+        public void SetQuadrantColor(Color color, Quadrant quadrant) {
             Do(x => {
                 foreach (var index in QuadrantIndexes[quadrant]) {
-                    x.SetColor(0, index, RgbColor.FromString(color));
+                    
+                    x.SetColor(0, index, RgbColor.FromRgb(color.R, color.G, color.B));
                 }
             });
         }

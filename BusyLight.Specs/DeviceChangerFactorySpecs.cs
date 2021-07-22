@@ -5,7 +5,7 @@ using BusyLight.Core;
 namespace BusyLight.Specs {
     public class DeviceChangerFactorySpecs : Specification<DeviceChangerFactory, IDeviceChanger> {
         protected DeviceChangerFactorySpecs() {
-            Sut = new DeviceChangerFactory(LightDeviceFake.Object, ColorNameValue, AssumeMaxSecondsValue);
+            Sut = new DeviceChangerFactory(LightDeviceFake.Object, ActiveColorGetterFake.Object, AssumeMaxSecondsValue);
         }
 
         [TestClass]

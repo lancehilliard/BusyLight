@@ -50,7 +50,9 @@
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
     </Reference>
@@ -68,11 +70,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppSettingUpdater.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DeviceChanger.cs" />
     <Compile Include="DeviceChangerFactory.cs" />
     <Compile Include="ActivityPublisher.cs" />
+    <Compile Include="IActiveColorSetter.cs" />
+    <Compile Include="IActiveColorGetter.cs" />
     <Compile Include="LightDevice.cs" />
+    <Compile Include="ActionLogger.cs" />
     <Compile Include="MicrophoneActivityPublisher.cs" />
     <Compile Include="MicrophoneRegistryStatusChecker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
