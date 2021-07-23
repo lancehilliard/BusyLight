@@ -173,7 +173,7 @@ namespace BusyLight.Client {
         }
 
         void quitToolStripMenuItem_Click(object sender, EventArgs e) {
-            _publishingThread.Abort();
+            _publishingThread?.Abort();
             _subscribingThread?.Abort();
             _deviceThread?.Abort();
             LightDevice?.Dispose();

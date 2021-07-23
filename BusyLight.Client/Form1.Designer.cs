@@ -198,6 +198,7 @@ namespace BusyLight.Client {
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimizeBox = false;
             this.Name = "Form1";
+            this.ShowInTaskbar = false;
             this.Text = "BusyLight";
             this.contextMenuStrip1.ResumeLayout(false);
             this.contextMenuStrip1.PerformLayout();
