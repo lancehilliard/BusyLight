@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics.CodeAnalysis;
+using System.Drawing;
 using System.Threading;
 using System.Windows.Forms;
 using BlinkStickDotNet;
@@ -25,7 +26,9 @@ namespace BusyLight.Client {
         readonly DeviceChangerFactory _deviceChangerFactory;
         static readonly ConnectionFactory ConnectionFactory = new() {Uri = new Uri(ConfigurationManager.AppSettings["MessageQueueUrl"])};
         static readonly ManualResetEvent ResetEvent = new(false);
-        readonly ILogger _logger;
+        readonly ILogger _mainLogger;
+        readonly ILogger _sendLogger;
+        readonly ILogger _receiveLogger;
         DateTime _lastMessageWhenUtc;
         DateTime _lastDeviceStateLogShownUtc;
         DeviceState _lastDeviceState;
@@ -43,12 +46,17 @@ namespace BusyLight.Client {
             //var appSettingUpdater = new AppSettingUpdater(config);
             //_activeColorSetter = new ActiveColorSetter(appSettingUpdater);
             _deviceChangerFactory = new DeviceChangerFactory(LightDevice, _activeColorGetter, AssumeMaxSeconds);
-            _logger = new ActionLogger(s => TextBoxText = $"{DateTime.Now} {s}{Environment.NewLine}{TextBoxText}");
-            var activityPublisher = new ActivityPublisher(new ConnectionFactory {Uri = new Uri(ConfigurationManager.AppSettings["MessageQueueUrl"])}, _logger);
-            _microphoneActivityPublisher = new MicrophoneActivityPublisher(MicrophoneStatusChecker, activityPublisher, _logger);
+            _mainLogger = new ActionLogger(s => MainTextBoxText = $"{DateTime.Now} {s}{Environment.NewLine}{MainTextBoxText}");
+            _sendLogger = new ActionLogger(s => SendTextBoxText = $"{DateTime.Now} {s}{Environment.NewLine}{SendTextBoxText}");
+            _receiveLogger = new ActionLogger(s => ReceiveTextBoxText = $"{DateTime.Now} {s}{Environment.NewLine}{ReceiveTextBoxText}");
+            var activityPublisher = new ActivityPublisher(new ConnectionFactory {Uri = new Uri(ConfigurationManager.AppSettings["MessageQueueUrl"])}, _sendLogger);
+            _microphoneActivityPublisher = new MicrophoneActivityPublisher(MicrophoneStatusChecker, activityPublisher, _sendLogger);
             _publishingThread.Start();
             _subscribingThread.Start();
             _deviceThread.Start();
+            if (!LightDevice.IsReady()) {
+                ledPanel.Hide();
+            }
         }
 
         protected override void OnClosing(CancelEventArgs e) {
@@ -59,47 +67,57 @@ namespace BusyLight.Client {
 
         [SuppressMessage("ReSharper", "FunctionNeverReturns", Justification = "Function runs in a background thread and is intended to run infinitely.")]
         void DoDeviceWork() {
-            while (true) {
-                var timeSinceLastMessage = DateTime.UtcNow - _lastMessageWhenUtc;
-                var deviceChanger = _deviceChangerFactory.Create(timeSinceLastMessage);
-                var deviceState = deviceChanger.Change();
-                var deviceIsOn = deviceState == DeviceState.On;
-                notifyIcon1.Icon = deviceIsOn ? Properties.Resources.BusyLight_On : Properties.Resources.BusyLight_Off;
-                notifyIcon1.Text = $@"BusyLight - {(deviceIsOn ? "On" : "Off")}";
-                var timeSinceLastDeviceStateLogShown = DateTime.UtcNow - _lastDeviceStateLogShownUtc;
-                if (TimeSpan.FromSeconds(1) < timeSinceLastDeviceStateLogShown || deviceState != _lastDeviceState) {
-                    _logger.Log(notifyIcon1.Text);
-                    _lastDeviceStateLogShownUtc = DateTime.UtcNow;
+            if (LightDevice.IsReady()) {
+                while (true) {
+                    var timeSinceLastMessage = DateTime.UtcNow - _lastMessageWhenUtc;
+                    var deviceChanger = _deviceChangerFactory.Create(timeSinceLastMessage);
+                    var deviceState = deviceChanger.Change();
+                    var deviceIsOn = deviceState == DeviceState.On;
+                    notifyIcon1.Icon = deviceIsOn ? Properties.Resources.BusyLight_On : Properties.Resources.BusyLight_Off;
+                    notifyIcon1.Text = $@"BusyLight - {(deviceIsOn ? "On" : "Off")}";
+                    var timeSinceLastDeviceStateLogShown = DateTime.UtcNow - _lastDeviceStateLogShownUtc;
+                    if (TimeSpan.FromSeconds(1) < timeSinceLastDeviceStateLogShown || deviceState != _lastDeviceState) {
+                        _mainLogger.Log(notifyIcon1.Text);
+                        _lastDeviceStateLogShownUtc = DateTime.UtcNow;
+                    }
+                    colorPanel.BackColor = deviceState == DeviceState.On ? _activeColorGetter.Get() : Color.Transparent;
+                    _lastDeviceState = deviceState;
+                    Thread.Sleep(250);
                 }
-                _lastDeviceState = deviceState;
-                Thread.Sleep(250);
             }
         }
 
         void DoSubscribingWork() {
             try {
-                using var connection = ConnectionFactory.CreateConnection();
-                using var channel = connection.CreateModel();
-                channel.QueueDeclare(Constants.QueueName, durable: false, exclusive: false, autoDelete: true, null);
-                var consumer = new EventingBasicConsumer(channel);
-                consumer.Received += (_, deliveryEventArgs) => {
-                    //var body = deliveryEventArgs.Body.ToArray();
-                    //var message = Encoding.UTF8.GetString(body);
-                    _lastMessageWhenUtc = DateTime.UtcNow > _lastMessageWhenUtc ? DateTime.UtcNow : _lastMessageWhenUtc;
-                    // ReSharper disable once AccessToDisposedClosure
-                    channel.BasicAck(deliveryEventArgs.DeliveryTag, false);
-                    _logger.Log("Activity received.");
-                };
-                channel.BasicConsume(consumer, Constants.QueueName);
-                ResetEvent.WaitOne();
+                if (LightDevice.IsReady()) {
+                    using var connection = ConnectionFactory.CreateConnection();
+                    using var channel = connection.CreateModel();
+                    channel.QueueDeclare(Constants.QueueName, durable: false, exclusive: false, autoDelete: true, null);
+                    var consumer = new EventingBasicConsumer(channel);
+                    consumer.Received += (_, deliveryEventArgs) => {
+                        //var body = deliveryEventArgs.Body.ToArray();
+                        //var message = Encoding.UTF8.GetString(body);
+                        _lastMessageWhenUtc = DateTime.UtcNow > _lastMessageWhenUtc ? DateTime.UtcNow : _lastMessageWhenUtc;
+                        // ReSharper disable once AccessToDisposedClosure
+                        channel.BasicAck(deliveryEventArgs.DeliveryTag, false);
+                        _receiveLogger.Log(Constants.ActivityReceiveMessage);
+                    };
+                    channel.BasicConsume(consumer, Constants.QueueName);
+                    _receiveLogger.Log("This log shows when activity is received.");
+                    ResetEvent.WaitOne();
+                }
+                else {
+                    _receiveLogger.Log("No local BlinkStick detected.");
+                }
             }
             catch (Exception e) {
-                _logger.Log($"Unable to subscribe ({e.Message}). Check your AMQP URL configuration, and then close and restart.");
+                _receiveLogger.Log($"Unable to subscribe ({e.Message}). Check your AMQP URL configuration, and then close and restart.");
             }
         }
 
         [SuppressMessage("ReSharper", "FunctionNeverReturns", Justification = "Function runs in a background thread and is intended to run infinitely.")]
         void DoPublishingWork() {
+            _sendLogger.Log("This log shows when activity is sent.");
             while (true) {
                 var secondsToWaitBeforeNextCheck = 1;
                 try {
@@ -115,16 +133,42 @@ namespace BusyLight.Client {
             }
         }
 
-        string TextBoxText {
+        string MainTextBoxText {
             get {
                 string result = null;
-                textBox1.Invoke(new MethodInvoker(GetValue));
+                mainTextBox.Invoke(new MethodInvoker(GetValue));
                 return result;
-                void GetValue() => result = textBox1.Text.Substring(0, textBox1.Text.Length > LogDisplayLength ? LogDisplayLength : textBox1.Text.Length);
+                void GetValue() => result = mainTextBox.Text.Substring(0, mainTextBox.Text.Length > LogDisplayLength ? LogDisplayLength : mainTextBox.Text.Length);
             }
             set {
-                textBox1.Invoke(new MethodInvoker(SetValue));
-                void SetValue() => textBox1.Text = value;
+                mainTextBox.Invoke(new MethodInvoker(SetValue));
+                void SetValue() => mainTextBox.Text = value;
+            }
+        }
+
+        string SendTextBoxText {
+            get {
+                string result = null;
+                sendTextBox.Invoke(new MethodInvoker(GetValue));
+                return result;
+                void GetValue() => result = sendTextBox.Text.Substring(0, sendTextBox.Text.Length > LogDisplayLength ? LogDisplayLength : sendTextBox.Text.Length);
+            }
+            set {
+                sendTextBox.Invoke(new MethodInvoker(SetValue));
+                void SetValue() => sendTextBox.Text = value;
+            }
+        }
+
+        string ReceiveTextBoxText {
+            get {
+                string result = null;
+                receiveTextBox.Invoke(new MethodInvoker(GetValue));
+                return result;
+                void GetValue() => result = receiveTextBox.Text.Substring(0, receiveTextBox.Text.Length > LogDisplayLength ? LogDisplayLength : receiveTextBox.Text.Length);
+            }
+            set {
+                receiveTextBox.Invoke(new MethodInvoker(SetValue));
+                void SetValue() => receiveTextBox.Text = value;
             }
         }
 

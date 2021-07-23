@@ -19,7 +19,7 @@ namespace BusyLight.Specs {
             public void MicrophoneUseShouldGetPublished() => ActivityPublisherFake.Verify(x => x.PublishMicrophoneUse());
 
             [TestMethod]
-            public void PublishShouldGetLogged() => LoggerFake.Verify(x => x.Log("Sending activity...")); // todo mlh refactor string to constant
+            public void PublishShouldGetLogged() => LoggerFake.Verify(x => x.Log(Constants.ActivitySendMessage));
 
             [TestMethod]
             public void ShouldReturnThatActivityWasPublished() => Assert.AreEqual(true, Result);

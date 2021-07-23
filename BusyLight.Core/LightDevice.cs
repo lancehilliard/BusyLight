@@ -7,9 +7,12 @@ namespace BusyLight.Core {
     public interface ILightDevice : IDisposable {
         void SetQuadrantColor(Color color, Quadrant quadrant);
         void TurnOffQuadrant(Quadrant first);
+        bool IsReady();
     }
 
     public class SquareLightDevice : LightDevice, ILightDevice {
+        readonly BlinkStick _device;
+
         static readonly Dictionary<Quadrant, byte[]> QuadrantIndexes = new() {
             {Quadrant.First, new byte[]{0,1}}
             , {Quadrant.Second, new byte[]{2,3}}
@@ -17,11 +20,14 @@ namespace BusyLight.Core {
             , {Quadrant.Fourth, new byte[]{6,7}}
         };
         public SquareLightDevice(BlinkStick device) : base(device) {
+            _device = device;
         }
 
         public void TurnOffQuadrant(Quadrant quadrant) {
             SetQuadrantColor(Color.Black, quadrant);
         }
+
+        public bool IsReady() => _device != null;
 
         public void SetQuadrantColor(Color color, Quadrant quadrant) {
             Do(x => {

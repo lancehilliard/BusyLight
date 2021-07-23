@@ -13,7 +13,7 @@
             var activityPublished = false;
             var microphoneIsBeingUsed = _microphoneStatusChecker.IsMicrophoneBeingUsed();
             if (microphoneIsBeingUsed) {
-                _logger.Log("Sending activity...");
+                _logger.Log(Constants.ActivitySendMessage);
                 _activityPublisher.PublishMicrophoneUse();
                 activityPublished = true;
             }
