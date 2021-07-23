@@ -3,6 +3,8 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Threading;
 using System.Windows.Forms;
 using BlinkStickDotNet;
@@ -39,9 +41,9 @@ namespace BusyLight.Client {
             _subscribingThread = new Thread(DoSubscribingWork) {IsBackground = true};
             _deviceThread = new Thread(DoDeviceWork) {IsBackground = true};
             _deviceChangerFactory = new DeviceChangerFactory(LightDevice, Config);
-            _mainLogger = new ActionLogger(s => MainTextBoxText = $"{DateTime.Now} {s}{Environment.NewLine}{MainTextBoxText}");
-            _sendLogger = new ActionLogger(s => SendTextBoxText = $"{DateTime.Now} {s}{Environment.NewLine}{SendTextBoxText}");
-            _receiveLogger = new ActionLogger(s => ReceiveTextBoxText = $"{DateTime.Now} {s}{Environment.NewLine}{ReceiveTextBoxText}");
+            _mainLogger = new ActionLogger(s => MainTextBoxText = $"{DateTime.Now}: {s}{Environment.NewLine}{MainTextBoxText}");
+            _sendLogger = new ActionLogger(s => SendTextBoxText = $"{DateTime.Now}: {s}{Environment.NewLine}{SendTextBoxText}");
+            _receiveLogger = new ActionLogger(s => ReceiveTextBoxText = $"{DateTime.Now}: {s}{Environment.NewLine}{ReceiveTextBoxText}");
             var activityPublisher = new ActivityPublisher(ConnectionFactory, _sendLogger);
             _microphoneActivityPublisher = new MicrophoneActivityPublisher(MicrophoneStatusChecker, activityPublisher, _sendLogger);
             _publishingThread.Start();
@@ -66,18 +68,30 @@ namespace BusyLight.Client {
                     var deviceChanger = _deviceChangerFactory.Create(timeSinceLastMessage);
                     var deviceState = deviceChanger.Change();
                     var deviceIsOn = deviceState == DeviceState.On;
-                    notifyIcon1.Icon = deviceIsOn ? Properties.Resources.BusyLight_On : Properties.Resources.BusyLight_Off;
-                    notifyIcon1.Text = $@"BusyLight - {(deviceIsOn ? "On" : "Off")}";
                     var timeSinceLastDeviceStateLogShown = DateTime.UtcNow - _lastDeviceStateLogShownUtc;
+                    colorPanel.BackColor = deviceState == DeviceState.On ? Config.ActiveColor : Color.LightSlateGray;
+                    notifyIcon1.Icon = GetIcon(colorPanel.BackColor);
+                    notifyIcon1.Text = $@"BusyLight - {(deviceIsOn ? "On" : "Off")}";
                     if (TimeSpan.FromSeconds(1) < timeSinceLastDeviceStateLogShown || deviceState != _lastDeviceState) {
                         _mainLogger.Log(notifyIcon1.Text);
                         _lastDeviceStateLogShownUtc = DateTime.UtcNow;
                     }
-                    colorPanel.BackColor = deviceState == DeviceState.On ? Config.ActiveColor : Color.Transparent;
                     _lastDeviceState = deviceState;
                     Thread.Sleep(250);
                 }
             }
+        }
+
+        Icon GetIcon(Color color) {
+            var size = 16;
+            var bitmap = new Bitmap(size, size, PixelFormat.Format32bppArgb);
+            var graphics = Graphics.FromImage(bitmap);
+            var rect = new Rectangle(0, 0, size, size);
+            var pen = new Pen(Color.Black, 2) {Alignment = PenAlignment.Inset};
+            graphics.FillRectangle(new SolidBrush(color), rect);
+            graphics.DrawRectangle(pen, rect);
+            var result = Icon.FromHandle(bitmap.GetHicon());
+            return result;
         }
 
         void DoSubscribingWork() {

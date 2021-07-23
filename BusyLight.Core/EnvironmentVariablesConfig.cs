@@ -24,12 +24,15 @@ namespace BusyLight.Core {
             get {
                 Color result;
                 try {
-                    result = ColorTranslator.FromHtml(Get());
+                    var value = Get();
+                    result = string.IsNullOrWhiteSpace(value) ? GetDefaultColor() : ColorTranslator.FromHtml(value);
                 }
                 catch (Exception) {
-                    result = ColorTranslator.FromHtml("#FF0000");
+                    result = GetDefaultColor();
                 }
                 return result;
+
+                Color GetDefaultColor() => ColorTranslator.FromHtml("#FF0000");
             }
         }
 
