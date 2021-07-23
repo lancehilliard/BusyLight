@@ -3,18 +3,16 @@
 namespace BusyLight.Core {
     public class DeviceChangerFactory {
         readonly ILightDevice _device;
-        readonly IActiveColorGetter _activeColorGetter;
-        readonly int _assumeMaxSeconds;
+        readonly IConfig _config;
 
-        public DeviceChangerFactory(ILightDevice device, IActiveColorGetter activeColorGetter, int assumeMaxSeconds) {
+        public DeviceChangerFactory(ILightDevice device, IConfig config) {
             _device = device;
-            _activeColorGetter = activeColorGetter;
-            _assumeMaxSeconds = assumeMaxSeconds;
+            _config = config;
         }
 
         public IDeviceChanger Create(TimeSpan timeSinceLastMessage) {
-            var deviceShouldBeOn = timeSinceLastMessage.TotalSeconds <= _assumeMaxSeconds;
-            var result = deviceShouldBeOn ? (IDeviceChanger)new OnDeviceChanger(_device, _activeColorGetter) : new OffDeviceChanger(_device);
+            var deviceShouldBeOn = timeSinceLastMessage.TotalSeconds <= _config.AssumeMaxSeconds;
+            var result = deviceShouldBeOn ? (IDeviceChanger)new OnDeviceChanger(_device, _config) : new OffDeviceChanger(_device);
             return result;
         }
     }

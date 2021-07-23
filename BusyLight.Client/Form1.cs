@@ -13,18 +13,15 @@ using Constants = BusyLight.Core.Constants;
 
 namespace BusyLight.Client {
     public partial class Form1 : Form {
-        static readonly int PublishIntervalSeconds = Convert.ToInt32(ConfigurationManager.AppSettings["PublishIntervalSeconds"]);
         static readonly IMicrophoneStatusChecker MicrophoneStatusChecker = new MicrophoneRegistryStatusChecker();
         readonly MicrophoneActivityPublisher _microphoneActivityPublisher;
-        readonly IActiveColorGetter _activeColorGetter;
-        //readonly IActiveColorSetter _activeColorSetter;
         readonly Thread _publishingThread;
         readonly Thread _subscribingThread;
         readonly Thread _deviceThread;
-        static readonly int AssumeMaxSeconds = Convert.ToInt32(ConfigurationManager.AppSettings["AssumeMaxSeconds"]);
         static readonly ILightDevice LightDevice = new SquareLightDevice(BlinkStick.FindFirst());
         readonly DeviceChangerFactory _deviceChangerFactory;
-        static readonly ConnectionFactory ConnectionFactory = new() {Uri = new Uri(ConfigurationManager.AppSettings["MessageQueueUrl"])};
+        static readonly IConfig Config = new EnvironmentVariablesConfig();
+        static readonly ConnectionFactory ConnectionFactory = new() {Uri = new Uri(Config.MessageQueueUrl)};
         static readonly ManualResetEvent ResetEvent = new(false);
         readonly ILogger _mainLogger;
         readonly ILogger _sendLogger;
@@ -41,15 +38,11 @@ namespace BusyLight.Client {
             _publishingThread = new Thread(DoPublishingWork) {IsBackground = true};
             _subscribingThread = new Thread(DoSubscribingWork) {IsBackground = true};
             _deviceThread = new Thread(DoDeviceWork) {IsBackground = true};
-            var config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            _activeColorGetter = new ActiveColorGetter(config);
-            //var appSettingUpdater = new AppSettingUpdater(config);
-            //_activeColorSetter = new ActiveColorSetter(appSettingUpdater);
-            _deviceChangerFactory = new DeviceChangerFactory(LightDevice, _activeColorGetter, AssumeMaxSeconds);
+            _deviceChangerFactory = new DeviceChangerFactory(LightDevice, Config);
             _mainLogger = new ActionLogger(s => MainTextBoxText = $"{DateTime.Now} {s}{Environment.NewLine}{MainTextBoxText}");
             _sendLogger = new ActionLogger(s => SendTextBoxText = $"{DateTime.Now} {s}{Environment.NewLine}{SendTextBoxText}");
             _receiveLogger = new ActionLogger(s => ReceiveTextBoxText = $"{DateTime.Now} {s}{Environment.NewLine}{ReceiveTextBoxText}");
-            var activityPublisher = new ActivityPublisher(new ConnectionFactory {Uri = new Uri(ConfigurationManager.AppSettings["MessageQueueUrl"])}, _sendLogger);
+            var activityPublisher = new ActivityPublisher(ConnectionFactory, _sendLogger);
             _microphoneActivityPublisher = new MicrophoneActivityPublisher(MicrophoneStatusChecker, activityPublisher, _sendLogger);
             _publishingThread.Start();
             _subscribingThread.Start();
@@ -80,7 +73,7 @@ namespace BusyLight.Client {
                         _mainLogger.Log(notifyIcon1.Text);
                         _lastDeviceStateLogShownUtc = DateTime.UtcNow;
                     }
-                    colorPanel.BackColor = deviceState == DeviceState.On ? _activeColorGetter.Get() : Color.Transparent;
+                    colorPanel.BackColor = deviceState == DeviceState.On ? Config.ActiveColor : Color.Transparent;
                     _lastDeviceState = deviceState;
                     Thread.Sleep(250);
                 }
@@ -123,7 +116,7 @@ namespace BusyLight.Client {
                 try {
                     var activityPublished = _microphoneActivityPublisher.PublishMicrophoneActivity();
                     if (activityPublished) {
-                        secondsToWaitBeforeNextCheck = PublishIntervalSeconds;
+                        secondsToWaitBeforeNextCheck = Config.PublishIntervalSeconds;
                     }
                 }
                 catch (Exception e) {
@@ -185,7 +178,7 @@ namespace BusyLight.Client {
         }
 
         void ShowWindow() {
-            var activeColor = _activeColorGetter.Get();
+            var activeColor = Config.ActiveColor;
             colorDialog1.Color = activeColor;
             colorPanel.BackColor = activeColor;
             WindowState = FormWindowState.Normal;

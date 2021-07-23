@@ -4,8 +4,8 @@ using BusyLight.Core;
 namespace BusyLight.Specs {
     public class OnDeviceChangerSpecs : Specification<OnDeviceChanger> {
         protected OnDeviceChangerSpecs() {
-            ActiveColorGetterFake.Setup(x => x.Get()).Returns(ColorValue);
-            Sut = new OnDeviceChanger(LightDeviceFake.Object, ActiveColorGetterFake.Object);
+            ConfigFake.Setup(x => x.ActiveColor).Returns(ColorValue);
+            Sut = new OnDeviceChanger(LightDeviceFake.Object, ConfigFake.Object);
         }
 
         [TestClass]

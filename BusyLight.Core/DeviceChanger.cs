@@ -5,17 +5,15 @@
 
     public class OnDeviceChanger : IDeviceChanger {
         readonly ILightDevice _device;
-        readonly IActiveColorGetter _activeColorGetter;
+        readonly IConfig _config;
 
-
-        public OnDeviceChanger(ILightDevice device, IActiveColorGetter activeColorGetter) {
+        public OnDeviceChanger(ILightDevice device, IConfig config) {
             _device = device;
-            _activeColorGetter = activeColorGetter;
+            _config = config;
         }
 
         public DeviceState Change() {
-            var color = _activeColorGetter.Get();
-            _device.SetQuadrantColor(color, Quadrant.First);
+            _device.SetQuadrantColor(_config.ActiveColor, Quadrant.First);
             return DeviceState.On;
         }
     }

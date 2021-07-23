@@ -5,12 +5,16 @@ using BusyLight.Core;
 namespace BusyLight.Specs {
     public class DeviceChangerFactorySpecs : Specification<DeviceChangerFactory, IDeviceChanger> {
         protected DeviceChangerFactorySpecs() {
-            Sut = new DeviceChangerFactory(LightDeviceFake.Object, ActiveColorGetterFake.Object, AssumeMaxSecondsValue);
+
+            Sut = new DeviceChangerFactory(LightDeviceFake.Object, ConfigFake.Object);
         }
 
         [TestClass]
         public class WhenTimeSinceLastMessageIsLessThanAssumeMaxSeconds : DeviceChangerFactorySpecs {
-            public WhenTimeSinceLastMessageIsLessThanAssumeMaxSeconds() => Result = Sut.Create(TimeSpan.FromSeconds(AssumeMaxSecondsValue-1));
+            public WhenTimeSinceLastMessageIsLessThanAssumeMaxSeconds() {
+                ConfigFake.Setup(x => x.AssumeMaxSeconds).Returns(AssumeMaxSecondsValue);
+                Result = Sut.Create(TimeSpan.FromSeconds(AssumeMaxSecondsValue - 1));
+            }
 
             [TestMethod]
             public void ShouldReturnImplementationThatTurnsOnTheDevice() => Assert.IsInstanceOfType(Result, typeof(OnDeviceChanger));
@@ -18,7 +22,10 @@ namespace BusyLight.Specs {
 
         [TestClass]
         public class WhenTimeSinceLastMessageIsEqualToAssumeMaxSeconds : DeviceChangerFactorySpecs {
-            public WhenTimeSinceLastMessageIsEqualToAssumeMaxSeconds() => Result = Sut.Create(TimeSpan.FromSeconds(AssumeMaxSecondsValue));
+            public WhenTimeSinceLastMessageIsEqualToAssumeMaxSeconds() {
+                ConfigFake.Setup(x => x.AssumeMaxSeconds).Returns(AssumeMaxSecondsValue);
+                Result = Sut.Create(TimeSpan.FromSeconds(AssumeMaxSecondsValue));
+            }
 
             [TestMethod]
             public void ShouldReturnImplementationThatTurnsOnTheDevice() => Assert.IsInstanceOfType(Result, typeof(OnDeviceChanger));
@@ -26,7 +33,10 @@ namespace BusyLight.Specs {
 
         [TestClass]
         public class WhenTimeSinceLastMessageIsGreaterThanAssumeMaxSeconds : DeviceChangerFactorySpecs {
-            public WhenTimeSinceLastMessageIsGreaterThanAssumeMaxSeconds() => Result = Sut.Create(TimeSpan.FromSeconds(AssumeMaxSecondsValue+1));
+            public WhenTimeSinceLastMessageIsGreaterThanAssumeMaxSeconds() {
+                ConfigFake.Setup(x => x.AssumeMaxSeconds).Returns(AssumeMaxSecondsValue);
+                Result = Sut.Create(TimeSpan.FromSeconds(AssumeMaxSecondsValue + 1));
+            }
 
             [TestMethod]
             public void ShouldReturnImplementationThatTurnsOffTheDevice() => Assert.IsInstanceOfType(Result, typeof(OffDeviceChanger));
