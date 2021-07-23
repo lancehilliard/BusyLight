@@ -10,6 +10,7 @@ namespace BusyLight.Specs {
         protected readonly Mock<IActiveColorGetter> ActiveColorGetterFake = new();
         protected readonly Mock<IMicrophoneStatusChecker> MicrophoneStatusCheckerFake = new();
         protected readonly Mock<IActivityPublisher> ActivityPublisherFake = new();
+        protected readonly Mock<ILogger> LoggerFake = new();
 
         protected readonly Color ColorValue = Color.Red;
         protected readonly int AssumeMaxSecondsValue = 42;

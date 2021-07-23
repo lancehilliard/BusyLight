@@ -1,6 +1,6 @@
 ﻿namespace BusyLight.Core {
     public interface IDeviceChanger {
-        void Change();
+        DeviceState Change();
     }
 
     public class OnDeviceChanger : IDeviceChanger {
@@ -13,9 +13,10 @@
             _activeColorGetter = activeColorGetter;
         }
 
-        public void Change() {
+        public DeviceState Change() {
             var color = _activeColorGetter.Get();
             _device.SetQuadrantColor(color, Quadrant.First);
+            return DeviceState.On;
         }
     }
 
@@ -25,8 +26,9 @@
             _device = device;
         }
 
-        public void Change() {
+        public DeviceState Change() {
             _device.TurnOffQuadrant(Quadrant.First);
+            return DeviceState.Off;
         }
     }
 }

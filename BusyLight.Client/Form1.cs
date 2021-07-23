@@ -27,6 +27,8 @@ namespace BusyLight.Client {
         static readonly ManualResetEvent ResetEvent = new(false);
         readonly ILogger _logger;
         DateTime _lastMessageWhenUtc;
+        DateTime _lastDeviceStateLogShownUtc;
+        DeviceState _lastDeviceState;
         static readonly int LogDisplayLength = 25000;
 
         public Form1() {
@@ -43,7 +45,7 @@ namespace BusyLight.Client {
             _deviceChangerFactory = new DeviceChangerFactory(LightDevice, _activeColorGetter, AssumeMaxSeconds);
             _logger = new ActionLogger(s => TextBoxText = $"{DateTime.Now} {s}{Environment.NewLine}{TextBoxText}");
             var activityPublisher = new ActivityPublisher(new ConnectionFactory {Uri = new Uri(ConfigurationManager.AppSettings["MessageQueueUrl"])}, _logger);
-            _microphoneActivityPublisher = new MicrophoneActivityPublisher(MicrophoneStatusChecker, activityPublisher);
+            _microphoneActivityPublisher = new MicrophoneActivityPublisher(MicrophoneStatusChecker, activityPublisher, _logger);
             _publishingThread.Start();
             _subscribingThread.Start();
             _deviceThread.Start();
@@ -60,7 +62,16 @@ namespace BusyLight.Client {
             while (true) {
                 var timeSinceLastMessage = DateTime.UtcNow - _lastMessageWhenUtc;
                 var deviceChanger = _deviceChangerFactory.Create(timeSinceLastMessage);
-                deviceChanger.Change();
+                var deviceState = deviceChanger.Change();
+                var deviceIsOn = deviceState == DeviceState.On;
+                notifyIcon1.Icon = deviceIsOn ? Properties.Resources.BusyLight_On : Properties.Resources.BusyLight_Off;
+                notifyIcon1.Text = $@"BusyLight - {(deviceIsOn ? "On" : "Off")}";
+                var timeSinceLastDeviceStateLogShown = DateTime.UtcNow - _lastDeviceStateLogShownUtc;
+                if (TimeSpan.FromSeconds(1) < timeSinceLastDeviceStateLogShown || deviceState != _lastDeviceState) {
+                    _logger.Log(notifyIcon1.Text);
+                    _lastDeviceStateLogShownUtc = DateTime.UtcNow;
+                }
+                _lastDeviceState = deviceState;
                 Thread.Sleep(250);
             }
         }
@@ -77,6 +88,7 @@ namespace BusyLight.Client {
                     _lastMessageWhenUtc = DateTime.UtcNow > _lastMessageWhenUtc ? DateTime.UtcNow : _lastMessageWhenUtc;
                     // ReSharper disable once AccessToDisposedClosure
                     channel.BasicAck(deliveryEventArgs.DeliveryTag, false);
+                    _logger.Log("Activity received.");
                 };
                 channel.BasicConsume(consumer, Constants.QueueName);
                 ResetEvent.WaitOne();
@@ -92,10 +104,9 @@ namespace BusyLight.Client {
                 var secondsToWaitBeforeNextCheck = 1;
                 try {
                     var activityPublished = _microphoneActivityPublisher.PublishMicrophoneActivity();
-                    secondsToWaitBeforeNextCheck = activityPublished ? PublishIntervalSeconds : secondsToWaitBeforeNextCheck;
-                    notifyIcon1.Icon = activityPublished ? Properties.Resources.BusyLight_On : Properties.Resources.BusyLight_Off;
-                    notifyIcon1.Text = $@"BusyLight - {(activityPublished ? "On" : "Off")}";
-                    _logger.Log(notifyIcon1.Text);
+                    if (activityPublished) {
+                        secondsToWaitBeforeNextCheck = PublishIntervalSeconds;
+                    }
                 }
                 catch (Exception e) {
                     Console.WriteLine(e);

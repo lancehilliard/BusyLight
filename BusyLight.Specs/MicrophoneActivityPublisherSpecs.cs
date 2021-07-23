@@ -5,7 +5,7 @@ using Moq;
 namespace BusyLight.Specs {
     public class MicrophoneActivityPublisherSpecs : Specification<MicrophoneActivityPublisher, bool> {
         protected MicrophoneActivityPublisherSpecs() {
-            Sut = new MicrophoneActivityPublisher(MicrophoneStatusCheckerFake.Object, ActivityPublisherFake.Object);
+            Sut = new MicrophoneActivityPublisher(MicrophoneStatusCheckerFake.Object, ActivityPublisherFake.Object, LoggerFake.Object);
         }
 
         [TestClass]
@@ -17,6 +17,9 @@ namespace BusyLight.Specs {
 
             [TestMethod]
             public void MicrophoneUseShouldGetPublished() => ActivityPublisherFake.Verify(x => x.PublishMicrophoneUse());
+
+            [TestMethod]
+            public void PublishShouldGetLogged() => LoggerFake.Verify(x => x.Log("Sending activity...")); // todo mlh refactor string to constant
 
             [TestMethod]
             public void ShouldReturnThatActivityWasPublished() => Assert.AreEqual(true, Result);
