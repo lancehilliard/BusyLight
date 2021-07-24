@@ -1,4 +1,4 @@
-# BusyLight 💡 👍
+# BusyLight 🟥 👍
 
 If you want to _automatically_ and _visually_ alert others nearby that you're busy, then BusyLight can help.
 
@@ -6,31 +6,27 @@ If you want to _automatically_ and _visually_ alert others nearby that you're bu
 
 ## Use Case
 
-The use case is your single desk with one or more computers (and maybe a mobile device?[1]) -- all intermittently involved in work that, ideally, wouldn't be interrupted by others nearby, such that a single and automatic light might sometimes convey "busy", no matter which device was driving the work.
+You're at your desk, using one or more devices (desktop, laptop, mobile[1], etc) to perform work. You want to automatically indicate, to anyone nearby, to avoid interrupting you. BusyLight monitors your activity on your devices and lights up your [BlinkStick](https://www.blinkstick.com) automatically when you're busy.
 
-So far, it only tracks calls (active/ongoing voice and video calls, to be precise; what else would you like it to track?).
+BusyLight was built for your [BlinkStick Square](https://www.blinkstick.com/products/blinkstick-square). And, so far, it only tracks voice/video calls (the first two LEDs light up when software accesses[2] your microphone). What other BlinkStick products would you like it to support? What other work/activity would you like it to track?
 
-## Services
+## Prerequisite
 
-BusyLight is two Windows services which work in concert to illuminate a [BlinkStick Square](https://www.blinkstick.com/products/blinkstick-square) whenever your microphone is being accessed by any app on your computer(s).
+BusyLight supports Windows 10 1903 or greater.
 
-### BusyLight.ActivityPublisher
+## Devices
 
-This service requires Windows 10 1903 or greater and detects when your microphone is being accessed. Run it on any computer(s)[1] from which you join calls.
-
-### BusyLight.LightSubscriber
-
-This service illuminates your BlinkStick when microphone access[2] is detected. Run it on the Windows computer attached to the [BlinkStick Square](https://www.blinkstick.com/products/blinkstick-square). It will automatically illuminate the first two LEDs on the device for the duration of your call.
+Run the BusyLight application on any Windows computer whose work should inform your BlinkStick. Run the BusyLight application on any *one* Windows computer connected to your BlinkStick. If that involves separate computers (or several computers), great. If those are the same computer, that's fine, too.
 
 ## Requirements
 
-* The ActivityPublisher service expects a [BlinkStick Square](https://www.blinkstick.com/products/blinkstick-square) plugged into the machine.
-* Both services expect a [message queue](https://github.com/lancehilliard/BusyLight/wiki/Messaging).
-* Both services require some [configuration](https://github.com/lancehilliard/BusyLight/wiki/Configuration).
+* A [BlinkStick Square](https://www.blinkstick.com/products/blinkstick-square) must be connected to at least one machine running BusyLight.
+* An [AMQP URL](https://github.com/lancehilliard/BusyLight/wiki/Messaging) must be specified on every machine running BusyLight.
+* Some [configuration](https://github.com/lancehilliard/BusyLight/wiki/Configuration) must first be specified on every machine running BusyLight.
 
 ## Running the Software
 
-See [Running the Software](https://github.com/lancehilliard/BusyLight/wiki/Running-the-Software) to run the services locally.
+See [Running the Software](https://github.com/lancehilliard/BusyLight/wiki/Running-the-Software) to get started.
 
 ### Notes
 * [1] Are you working from your mobile phone, too? Check our [Mobile wiki page](https://github.com/lancehilliard/BusyLight/wiki/Mobile) for ideas!
