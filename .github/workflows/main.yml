@@ -15,6 +15,23 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
+    - name: Extract branch name
+      shell: bash
+      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+      id: extract_branch
+
+    - name: Extract short SHA
+      shell: bash
+      run: echo "##[set-output name=sha;]$(git rev-parse --short $GITHUB_SHA)"
+      id: extract_sha
+
+    - name: Add commit short SHA as AssemblyFileVersion
+      uses: DamianReeves/write-file-action/@v1.0
+      with:
+        path: BusyLight/BusyLight.Client/Properties/AssemblyInfo.cs
+        contents: '[assembly: AssemblyFileVersion("${{ steps.extract_branch.outputs.branch }}..{{ steps.extract_sha.outputs.sha }}")]'
+        write-mode: append
       
     - name: Setup Nuget.exe
       uses: warrenbuckley/Setup-Nuget@v1
@@ -30,10 +47,19 @@ jobs:
         ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
 
     - name: MSBuild
-      run: msbuild BusyLight.Specs\BusyLight.Specs.csproj
+      run: msbuild BusyLight.Specs\BusyLight.Specs.csproj /p:Configuration=Release
       
     - name: Setup VSTest.exe
       uses: Malcolmnixon/Setup-VSTest@v4
 
-    - name: VSTest
+    - name: Run Tests
       run: vstest.console BusyLight.Specs\bin\Debug\BusyLight.Specs.dll
+
+    - name: MSBuild
+      run: msbuild BusyLight.Install\BusyLight.Install.vdproj /p:Configuration=Release
+
+    - name: Upload MSI Artifact
+    - uses: actions/upload-artifact@v2
+      with:
+        name: MSI
+        path: BusyLight.Install/Release/BusyLight.msi
