@@ -16,26 +16,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Extract branch name
-      shell: bash
-      run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
-      id: extract_branch
-
-    - name: Extract short SHA
-      shell: bash
-      run: echo "##[set-output name=sha;]$(git rev-parse --short $GITHUB_SHA)"
-      id: extract_sha
-      
-    - run: "echo Branch: ${{ steps.extract_branch.outputs.branch }}"
-    - run: "echo Commit: ${{ steps.extract_sha.outputs.sha }}"
-
-    - name: Add commit short SHA as AssemblyFileVersion
-      uses: DamianReeves/write-file-action/@v1.0
-      with:
-        path: BusyLight/BusyLight.Client/Properties/AssemblyInfo.cs
-        contents: '[assembly: AssemblyFileVersion("${{ steps.extract_branch.outputs.branch }}..{{ steps.extract_sha.outputs.sha }}")]'
-        write-mode: append
-      
     - name: Setup Nuget.exe
       uses: warrenbuckley/Setup-Nuget@v1
       env:
@@ -44,18 +24,6 @@ jobs:
     - name: Nuget restore
       run: nuget restore BusyLight.sln
       
-    - name: Build Installer
-      shell: cmd
-      run: |
-        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common\IDE\devenv.exe BusyLight.sln /Rebuild /Project BusyLight.Install\BusyLight.Install.vdproj /ProjectConfig ProjConfigName"
-
-    - name: Upload Installer Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: Installer
-        path: BusyLight.Install/Release/BusyLight.msi
-        if-no-files-found: error
-
     - name: Setup MSBuild
       uses: warrenbuckley/Setup-MSBuild@v1
       env:
