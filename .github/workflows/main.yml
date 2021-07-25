@@ -44,6 +44,17 @@ jobs:
     - name: Nuget restore
       run: nuget restore BusyLight.sln
       
+    - name: Build Installer
+      run: |
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common\IDE\devenv.exe BusyLight.sln /Rebuild /Project BusyLight.Install\BusyLight.Install.vdproj /ProjectConfig ProjConfigName"
+
+    - name: Upload Installer Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: Installer
+        path: BusyLight.Install/Release/BusyLight.msi
+        if-no-files-found: error
+
     - name: Setup MSBuild
       uses: warrenbuckley/Setup-MSBuild@v1
       env:
@@ -57,14 +68,3 @@ jobs:
 
     - name: Run Tests
       run: vstest.console BusyLight.Specs\bin\Release\BusyLight.Specs.dll
-
-    - name: Build Installer
-      run: |
-        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common\IDE\devenv.exe BusyLight.sln /Project BusyLight.Install\BusyLight.Install.vdproj /rebuild Release"
-
-    - name: Upload Installer Artifact
-      uses: actions/upload-artifact@v2
-      with:
-        name: Installer
-        path: BusyLight.Install/Release/BusyLight.msi
-        if-no-files-found: error
