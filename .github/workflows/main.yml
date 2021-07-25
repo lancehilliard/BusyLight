@@ -61,6 +61,7 @@ jobs:
     - name: Build Installer
       run: |
         cd "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\"
+        dir
         .\devenv.exe BusyLight.Install\BusyLight.Install.vdproj /build Release
 
     - name: Upload Installer Artifact
