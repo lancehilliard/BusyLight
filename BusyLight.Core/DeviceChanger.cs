@@ -13,7 +13,7 @@
         }
 
         public DeviceState Change() {
-            var result = DeviceState.WouldBeOn;
+            var result = DeviceState.SimulatedOn;
             var isReady = _device.IsReady();
             if (isReady) {
                 _device.SetQuadrantColor(_config.ActiveColor, Quadrant.First);
@@ -30,7 +30,7 @@
         }
 
         public DeviceState Change() {
-            var result = DeviceState.WouldBeOff;
+            var result = DeviceState.SimulatedOff;
             if (_device.IsReady()) {
                 _device.TurnOffQuadrant(Quadrant.First);
                 result = DeviceState.Off;

@@ -70,7 +70,7 @@ namespace BusyLight.Client {
                 var timeSinceLastMessage = DateTime.UtcNow - _lastMessageWhenUtc;
                 var deviceChanger = _deviceChangerFactory.Create(timeSinceLastMessage);
                 var deviceState = deviceChanger.Change();
-                var deviceIsOn = deviceState is DeviceState.On or DeviceState.WouldBeOn;
+                var deviceIsOn = deviceState is DeviceState.On or DeviceState.SimulatedOn;
                 var timeSinceLastDeviceStateLogShown = DateTime.UtcNow - _lastDeviceStateLogShownUtc;
                 colorPanel.BackColor = deviceIsOn ? Config.ActiveColor : Color.FromArgb(128, 119, 136, 153);
                 var onOffText = Enum.GetName(typeof(DeviceState), deviceState);

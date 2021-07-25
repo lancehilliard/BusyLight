@@ -2,7 +2,7 @@
     public enum DeviceState {
         On,
         Off,
-        WouldBeOn,
-        WouldBeOff
+        SimulatedOn,
+        SimulatedOff
     }
 }
