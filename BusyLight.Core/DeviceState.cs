@@ -1,6 +1,8 @@
 ﻿namespace BusyLight.Core {
     public enum DeviceState {
         On,
-        Off
+        Off,
+        WouldBeOn,
+        WouldBeOff
     }
 }

@@ -30,7 +30,10 @@ namespace BusyLight.Client {
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.busyLightToolStripMenuItem = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.homepageMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.openStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ledLabel = new System.Windows.Forms.Label();
             this.colorPanel = new System.Windows.Forms.Panel();
@@ -56,10 +59,14 @@ namespace BusyLight.Client {
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.busyLightToolStripMenuItem,
             this.toolStripSeparator1,
+            this.homepageMenuItem,
+            this.toolStripSeparator3,
             this.openStripMenuItem,
+            this.toolStripSeparator2,
             this.quitToolStripMenuItem});
+            this.contextMenuStrip1.MaximumSize = new System.Drawing.Size(120, 0);
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(241, 72);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(120, 106);
             // 
             // busyLightToolStripMenuItem
             // 
@@ -67,25 +74,44 @@ namespace BusyLight.Client {
             this.busyLightToolStripMenuItem.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.busyLightToolStripMenuItem.Enabled = false;
             this.busyLightToolStripMenuItem.Name = "busyLightToolStripMenuItem";
-            this.busyLightToolStripMenuItem.Size = new System.Drawing.Size(180, 16);
+            this.busyLightToolStripMenuItem.Size = new System.Drawing.Size(75, 16);
             this.busyLightToolStripMenuItem.Text = "BusyLight";
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(237, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(116, 6);
+            // 
+            // homepageMenuItem
+            // 
+            this.homepageMenuItem.Name = "homepageMenuItem";
+            this.homepageMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.homepageMenuItem.Text = "Homepage";
+            this.homepageMenuItem.ToolTipText = "Browse to BusyLight GitHub Repository";
+            this.homepageMenuItem.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(116, 6);
             // 
             // openStripMenuItem
             // 
             this.openStripMenuItem.Name = "openStripMenuItem";
-            this.openStripMenuItem.Size = new System.Drawing.Size(240, 22);
+            this.openStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.openStripMenuItem.Text = "Open";
+            this.openStripMenuItem.ToolTipText = "Show BusyLight Window";
             this.openStripMenuItem.Click += new System.EventHandler(this.openStripMenuItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(116, 6);
             // 
             // quitToolStripMenuItem
             // 
             this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-            this.quitToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.quitToolStripMenuItem.Text = "Quit";
             this.quitToolStripMenuItem.ToolTipText = "Quit BusyLight";
             this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
@@ -177,6 +203,7 @@ namespace BusyLight.Client {
             // 
             // ledPanel
             // 
+            this.ledPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.ledPanel.ColumnCount = 2;
             this.ledPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75F));
             this.ledPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
@@ -227,6 +254,9 @@ namespace BusyLight.Client {
         private System.Windows.Forms.TextBox sendTextBox;
         private System.Windows.Forms.TextBox receiveTextBox;
         private System.Windows.Forms.TableLayoutPanel ledPanel;
+        private System.Windows.Forms.ToolStripMenuItem homepageMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
     }
 }
 

@@ -13,8 +13,12 @@
         }
 
         public DeviceState Change() {
-            _device.SetQuadrantColor(_config.ActiveColor, Quadrant.First);
-            return DeviceState.On;
+            var result = DeviceState.On;
+            if (_device.IsReady()) {
+                _device.SetQuadrantColor(_config.ActiveColor, Quadrant.First);
+                result = DeviceState.WouldBeOn;
+            }
+            return result;
         }
     }
 
@@ -25,8 +29,12 @@
         }
 
         public DeviceState Change() {
-            _device.TurnOffQuadrant(Quadrant.First);
-            return DeviceState.Off;
+            var result = DeviceState.Off;
+            if (_device.IsReady()) {
+                _device.TurnOffQuadrant(Quadrant.First);
+                result = DeviceState.WouldBeOff;
+            }
+            return result;
         }
     }
 }
