@@ -23,11 +23,9 @@ jobs:
 
     - name: Nuget restore
       run: nuget restore BusyLight.sln
-      
-    - name: Setup MSBuild
-      uses: warrenbuckley/Setup-MSBuild@v1
-      env:
-        ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+
+    - name: Add msbuild to PATH
+      uses: microsoft/setup-msbuild@v1.0.2
 
     - name: Build Tests
       run: msbuild BusyLight.Specs\BusyLight.Specs.csproj /p:Configuration=Release
