@@ -6,9 +6,9 @@ If you want to _automatically_ and _visually_ alert others nearby that you're bu
 
 ## Use Case
 
-You're at your desk, using one or more devices (desktop, laptop, mobile[1], etc) to perform work. You want to automatically indicate, to anyone nearby, to avoid interrupting you. BusyLight monitors your activity on your devices and lights up your [BlinkStick](https://www.blinkstick.com) automatically when you're busy.
+You're at your desk, using one or more devices (Windows desktop and/or laptop, mobile[1], etc) to perform work. You sometimes want to automatically signal "please don't interrupt me" to anyone nearby. BusyLight monitors your device activity and illuminates your [BlinkStick](https://www.blinkstick.com) during those moments.
 
-BusyLight was built for your [BlinkStick Square](https://www.blinkstick.com/products/blinkstick-square). And, so far, it only tracks voice/video calls (the first two LEDs light up when software accesses[2] your microphone). What other BlinkStick products would you like it to support? What other work/activity would you like it to track?
+BusyLight was built for a [BlinkStick Square](https://www.blinkstick.com/products/blinkstick-square). And, so far, it only tracks voice/video calls (the first two LEDs light up when software accesses[2] your microphone). What other BlinkStick products would you like it to support? What other work/activity would you like it to track?
 
 ## Prerequisite
 
@@ -16,13 +16,14 @@ BusyLight supports Windows 10 1903 or greater.
 
 ## Devices
 
-Run the BusyLight application on any Windows computer whose work should inform your BlinkStick. Run the BusyLight application on any *one* Windows computer connected to your BlinkStick. If that involves separate computers (or several computers), great. If those are the same computer, that's fine, too.
+BusyLight runs on the machine connected to your BlinkStick, and also on any other machine(s) you're working on. That _can_ mean a _single_ device, if you just want to monitor one PC, but BusyLight's strength lay in monitoring _multiple_ devices for activity.
 
 ## Requirements
 
-* A [BlinkStick Square](https://www.blinkstick.com/products/blinkstick-square) must be connected to at least one machine running BusyLight.
-* An [AMQP URL](https://github.com/lancehilliard/BusyLight/wiki/Messaging) must be specified on every machine running BusyLight.
-* Some [configuration](https://github.com/lancehilliard/BusyLight/wiki/Configuration) must first be specified on every machine running BusyLight.
+* A [BlinkStick Square](https://www.blinkstick.com/products/blinkstick-square) must be connected to at least one Windows machine running BusyLight.
+  * otherwise, BusyLight will display a simulation of BlinkStick activity
+    * (good for testing, if you're still debating the device purchase)
+* Some [configuration](https://github.com/lancehilliard/BusyLight/wiki/Configuration), including an [AMQP URL](https://github.com/lancehilliard/BusyLight/wiki/Messaging), must  be specified on every machine running BusyLight.
 
 ## Running the Software
 
