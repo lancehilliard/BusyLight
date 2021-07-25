@@ -60,10 +60,11 @@ jobs:
 
     - name: Build Installer
       run: |
-        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common\IDE\devenv.exe BusyLight.Install\BusyLight.Install.vdproj /build Release"
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common\IDE\devenv.exe BusyLight.Install\BusyLight.Install.vdproj /rebuild Release"
 
     - name: Upload Installer Artifact
       uses: actions/upload-artifact@v2
       with:
         name: Installer
         path: BusyLight.Install/Release/BusyLight.msi
+        if-no-files-found: error
