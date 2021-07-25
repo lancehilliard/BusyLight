@@ -25,6 +25,9 @@ jobs:
       shell: bash
       run: echo "##[set-output name=sha;]$(git rev-parse --short $GITHUB_SHA)"
       id: extract_sha
+      
+    - run: "echo Branch: ${{ steps.extract_branch.outputs.branch }}"
+    - run: "echo Commit: ${{ steps.extract_sha.outputs.sha }}"
 
     - name: Add commit short SHA as AssemblyFileVersion
       uses: DamianReeves/write-file-action/@v1.0
@@ -53,7 +56,7 @@ jobs:
       uses: Malcolmnixon/Setup-VSTest@v4
 
     - name: Run Tests
-      run: vstest.console BusyLight.Specs\bin\Debug\BusyLight.Specs.dll
+      run: vstest.console BusyLight.Specs\bin\Release\BusyLight.Specs.dll
 
     - name: MSBuild
       run: msbuild BusyLight.Install\BusyLight.Install.vdproj /p:Configuration=Release
