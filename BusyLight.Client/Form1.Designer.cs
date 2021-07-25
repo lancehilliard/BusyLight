@@ -121,7 +121,7 @@ namespace BusyLight.Client {
             this.ledLabel.AutoSize = true;
             this.ledLabel.Dock = System.Windows.Forms.DockStyle.Right;
             this.ledLabel.Font = new System.Drawing.Font("Yu Gothic UI", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ledLabel.Location = new System.Drawing.Point(16, 0);
+            this.ledLabel.Location = new System.Drawing.Point(116, 0);
             this.ledLabel.Margin = new System.Windows.Forms.Padding(0);
             this.ledLabel.Name = "ledLabel";
             this.ledLabel.Size = new System.Drawing.Size(59, 26);
@@ -133,7 +133,7 @@ namespace BusyLight.Client {
             // 
             this.colorPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.colorPanel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.colorPanel.Location = new System.Drawing.Point(78, 3);
+            this.colorPanel.Location = new System.Drawing.Point(178, 3);
             this.colorPanel.Name = "colorPanel";
             this.colorPanel.Size = new System.Drawing.Size(19, 20);
             this.colorPanel.TabIndex = 0;
@@ -205,15 +205,15 @@ namespace BusyLight.Client {
             // 
             this.ledPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.ledPanel.ColumnCount = 2;
-            this.ledPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75F));
+            this.ledPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 175F));
             this.ledPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.ledPanel.Controls.Add(this.ledLabel, 0, 0);
             this.ledPanel.Controls.Add(this.colorPanel, 1, 0);
-            this.ledPanel.Location = new System.Drawing.Point(822, 5);
+            this.ledPanel.Location = new System.Drawing.Point(722, 4);
             this.ledPanel.Name = "ledPanel";
             this.ledPanel.RowCount = 1;
             this.ledPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.ledPanel.Size = new System.Drawing.Size(100, 25);
+            this.ledPanel.Size = new System.Drawing.Size(200, 25);
             this.ledPanel.TabIndex = 5;
             // 
             // Form1

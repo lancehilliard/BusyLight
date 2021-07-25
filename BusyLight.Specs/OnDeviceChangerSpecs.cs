@@ -10,7 +10,10 @@ namespace BusyLight.Specs {
 
         [TestClass]
         public class WhenOnDeviceChangerChangesTheDevice : OnDeviceChangerSpecs {
-            public WhenOnDeviceChangerChangesTheDevice() => Sut.Change();
+            public WhenOnDeviceChangerChangesTheDevice() {
+                LightDeviceFake.Setup(x => x.IsReady()).Returns(true);
+                Sut.Change();
+            }
 
             [TestMethod]
             public void ShouldSetFirstQuadrantToGivenColor() => LightDeviceFake.Verify(x => x.SetQuadrantColor(ColorValue, Quadrant.First));

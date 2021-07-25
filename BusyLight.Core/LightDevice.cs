@@ -10,29 +10,30 @@ namespace BusyLight.Core {
         bool IsReady();
     }
 
-    public class SquareLightDevice : LightDevice, ILightDevice {
-        readonly BlinkStick _device;
-
+    public class SquareLightDevice : QuadrantLightDevice, ILightDevice {
         static readonly Dictionary<Quadrant, byte[]> QuadrantIndexes = new() {
             {Quadrant.First, new byte[]{0,1}}
             , {Quadrant.Second, new byte[]{2,3}}
             , {Quadrant.Third, new byte[]{4,5}}
             , {Quadrant.Fourth, new byte[]{6,7}}
         };
-        public SquareLightDevice(BlinkStick device) : base(device) {
-            _device = device;
-        }
 
+        public SquareLightDevice(ILogger logger) : base(logger, QuadrantIndexes) { }
+    }
+
+    public class QuadrantLightDevice : LightDevice {
+        readonly Dictionary<Quadrant, byte[]> _quadrantIndexes;
+
+        protected QuadrantLightDevice(ILogger logger, Dictionary<Quadrant, byte[]> quadrantIndexes) : base(logger) {
+            _quadrantIndexes = quadrantIndexes;
+        }
         public void TurnOffQuadrant(Quadrant quadrant) {
-            SetQuadrantColor(Color.Black, quadrant);
+            SetQuadrantColor(OffColor, quadrant);
         }
-
-        public bool IsReady() => _device != null;
-
+        
         public void SetQuadrantColor(Color color, Quadrant quadrant) {
             Do(x => {
-                foreach (var index in QuadrantIndexes[quadrant]) {
-                    
+                foreach (var index in _quadrantIndexes[quadrant]) {
                     x.SetColor(0, index, RgbColor.FromRgb(color.R, color.G, color.B));
                 }
             });
@@ -40,23 +41,39 @@ namespace BusyLight.Core {
     }
 
     public class LightDevice : IDisposable {
-        readonly BlinkStick _device;
+        BlinkStick _device;
+        readonly ILogger _logger;
+        protected static readonly Color OffColor = Color.Black;
 
-        protected LightDevice(BlinkStick device) {
-            _device = device;
+        protected LightDevice(ILogger logger) {
+            _logger = logger;
         }
 
-        protected void Do(Action<BlinkStick> action) {
-            if (_device.OpenDevice()) {
-                action(_device);
-                _device.CloseDevice();
+        BlinkStick Device {
+            get {
+                if (_device is null || !_device.Connected) {
+                    _device = BlinkStick.FindFirst();
+                    _device?.OpenDevice();
+                }
+                return _device;
             }
-            else {
-                throw new NotSupportedException("Light device not available.");
+        }
+
+        public bool IsReady() => Device is {Connected: true};
+
+        protected void Do(Action<BlinkStick> action) {
+            try {
+                action(Device);
+            }
+            catch (Exception e) {
+                _logger.Log($"BlinkStick error. Message: {e.Message}; Trace: {e.StackTrace}");
+                _device?.CloseDevice();
+                _device = null;
             }
         }
 
         public void Dispose() {
+            _device?.CloseDevice();
             _device?.Dispose();
         }
     }

@@ -9,7 +9,6 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
-using BlinkStickDotNet;
 using BusyLight.Core;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -22,7 +21,7 @@ namespace BusyLight.Client {
         readonly Thread _publishingThread;
         readonly Thread _subscribingThread;
         readonly Thread _deviceThread;
-        static readonly ILightDevice LightDevice = new SquareLightDevice(BlinkStick.FindFirst());
+        readonly ILightDevice _lightDevice;
         readonly DeviceChangerFactory _deviceChangerFactory;
         static readonly IConfig Config = new EnvironmentVariablesConfig();
         static readonly ConnectionFactory ConnectionFactory = new() {Uri = new Uri(Config.MessageQueueUrl)};
@@ -43,10 +42,11 @@ namespace BusyLight.Client {
             _publishingThread = new Thread(DoPublishingWork) {IsBackground = true};
             _subscribingThread = new Thread(DoSubscribingWork) {IsBackground = true};
             _deviceThread = new Thread(DoDeviceWork) {IsBackground = true};
-            _deviceChangerFactory = new DeviceChangerFactory(LightDevice, Config);
             _mainLogger = new ActionLogger(s => MainTextBoxText = $"{DateTime.Now}: {s}{Environment.NewLine}{MainTextBoxText}");
             _sendLogger = new ActionLogger(s => SendTextBoxText = $"{DateTime.Now}: {s}{Environment.NewLine}{SendTextBoxText}");
             _receiveLogger = new ActionLogger(s => ReceiveTextBoxText = $"{DateTime.Now}: {s}{Environment.NewLine}{ReceiveTextBoxText}");
+            _lightDevice =  new SquareLightDevice(_mainLogger);
+            _deviceChangerFactory = new DeviceChangerFactory(_lightDevice, Config);
             var activityPublisher = new ActivityPublisher(ConnectionFactory, _sendLogger);
             _microphoneActivityPublisher = new MicrophoneActivityPublisher(MicrophoneStatusChecker, activityPublisher, _sendLogger);
             _publishingThread.Start();
@@ -105,9 +105,6 @@ namespace BusyLight.Client {
             Thread.Sleep(TimeSpan.FromSeconds(1));
             try {
                 _receiveLogger.Log("This log shows when activity is received.");
-                if (!LightDevice.IsReady()) {
-                    _receiveLogger.Log("No local BlinkStick detected. BusyLight will only simulate.");
-                }
                 using var connection = ConnectionFactory.CreateConnection();
                 using var channel = connection.CreateModel();
                 channel.QueueDeclare(Constants.QueueName, durable: false, exclusive: false, autoDelete: true, null);
@@ -204,7 +201,7 @@ namespace BusyLight.Client {
             _publishingThread?.Abort();
             _subscribingThread?.Abort();
             _deviceThread?.Abort();
-            LightDevice?.Dispose();
+            _lightDevice?.Dispose();
             Application.Exit();
         }
 
