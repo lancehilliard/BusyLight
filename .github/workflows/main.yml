@@ -44,25 +44,22 @@ jobs:
     - name: Nuget restore
       run: nuget restore BusyLight.sln
       
-    - name: Setup MSBuild.exe
+    - name: Setup MSBuild
       uses: warrenbuckley/Setup-MSBuild@v1
       env:
         ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
 
-    - name: MSBuild
-      run: msbuild BusyLight.Specs\BusyLight.Specs.csproj /p:Configuration=Release
+    - name: Build Tests
+      run: msbuild BusyLight.sln /p:Configuration=Release
       
-    - name: Setup VSTest.exe
+    - name: Setup Test Runner
       uses: Malcolmnixon/Setup-VSTest@v4
 
     - name: Run Tests
       run: vstest.console BusyLight.Specs\bin\Release\BusyLight.Specs.dll
 
-    - name: MSBuild
-      run: msbuild BusyLight.Install\BusyLight.Install.vdproj /p:Configuration=Release
-
-    - name: Upload MSI Artifact
+    - name: Upload Installer Artifact
       uses: actions/upload-artifact@v2
       with:
-        name: MSI
+        name: Installer
         path: BusyLight.Install/Release/BusyLight.msi
