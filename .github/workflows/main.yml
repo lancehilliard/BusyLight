@@ -59,7 +59,8 @@ jobs:
       run: vstest.console BusyLight.Specs\bin\Release\BusyLight.Specs.dll
 
     - name: Build Installer
-      run: C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common\IDE\devenv.exe BusyLight.Install\BusyLight.Install.vdproj /build Release
+      run: |
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common\IDE\devenv.exe BusyLight.Install\BusyLight.Install.vdproj /build Release"
 
     - name: Upload Installer Artifact
       uses: actions/upload-artifact@v2
