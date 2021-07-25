@@ -38,14 +38,12 @@ namespace BusyLight.Core {
 
         public int AssumeMaxSeconds {
             get {
-                int result = int.TryParse(Get(), out result) ? result : 15;
+                int result = int.TryParse(Get(), out result) ? result : 10;
                 return result;
             }
         }
 
-        protected virtual string Get([CallerMemberName]string name = "") {
-            throw new NotImplementedException();
-        }
+        protected virtual string Get([CallerMemberName]string name = "") {throw new NotImplementedException();}
     }
 
     public class EnvironmentVariablesConfig : Config {

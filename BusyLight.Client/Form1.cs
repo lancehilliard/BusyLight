@@ -6,6 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.Net.Mail;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
@@ -16,29 +17,37 @@ using Constants = BusyLight.Core.Constants;
 
 namespace BusyLight.Client {
     public partial class Form1 : Form {
-        static readonly IMicrophoneStatusChecker MicrophoneStatusChecker = new MicrophoneRegistryStatusChecker();
-        readonly MicrophoneActivityPublisher _microphoneActivityPublisher;
+        static readonly int LogDisplayLength = 25000;
+        static readonly Color OffColor = Color.FromArgb(128, 119, 136, 153);
+
+        readonly IConfig _config;
+        readonly ILogger _mainLogger;
+        readonly ILogger _sendLogger;
+        readonly ILogger _receiveLogger;
+        readonly Thread _startThread;
         readonly Thread _publishingThread;
         readonly Thread _subscribingThread;
         readonly Thread _deviceThread;
         readonly ILightDevice _lightDevice;
+        readonly MicrophoneActivityPublisher _microphoneActivityPublisher;
         readonly DeviceChangerFactory _deviceChangerFactory;
-        static readonly IConfig Config = new EnvironmentVariablesConfig();
-        static readonly ConnectionFactory ConnectionFactory = new() {Uri = new Uri(Config.MessageQueueUrl)};
-        static readonly ManualResetEvent ResetEvent = new(false);
-        readonly ILogger _mainLogger;
-        readonly ILogger _sendLogger;
-        readonly ILogger _receiveLogger;
+        readonly ConnectionFactory _connectionFactory;
+        readonly ManualResetEvent _resetEvent;
+
         DateTime _lastMessageWhenUtc;
         DateTime _lastDeviceStateLogShownUtc;
         DeviceState _lastDeviceState;
-        static readonly int LogDisplayLength = 25000;
-        Icon icon;
+        Icon _icon;
+        readonly bool _willReceive;
 
         public Form1() {
             InitializeComponent();
             WindowState = FormWindowState.Minimized;
             ShowInTaskbar = false;
+            _config = new EnvironmentVariablesConfig();
+            _connectionFactory = new();
+            _resetEvent = new(false);
+            _startThread = new Thread(DoStartWork) {IsBackground = true};
             _publishingThread = new Thread(DoPublishingWork) {IsBackground = true};
             _subscribingThread = new Thread(DoSubscribingWork) {IsBackground = true};
             _deviceThread = new Thread(DoDeviceWork) {IsBackground = true};
@@ -46,13 +55,40 @@ namespace BusyLight.Client {
             _sendLogger = new ActionLogger(s => SendTextBoxText = $"{DateTime.Now}: {s}{Environment.NewLine}{SendTextBoxText}");
             _receiveLogger = new ActionLogger(s => ReceiveTextBoxText = $"{DateTime.Now}: {s}{Environment.NewLine}{ReceiveTextBoxText}");
             _lightDevice =  new SquareLightDevice(_mainLogger);
-            _deviceChangerFactory = new DeviceChangerFactory(_lightDevice, Config);
-            var activityPublisher = new ActivityPublisher(ConnectionFactory, _sendLogger);
-            _microphoneActivityPublisher = new MicrophoneActivityPublisher(MicrophoneStatusChecker, activityPublisher, _sendLogger);
-            _publishingThread.Start();
-            _subscribingThread.Start();
-            _deviceThread.Start();
-            icon = GetIcon(colorPanel.BackColor);
+            _deviceChangerFactory = new DeviceChangerFactory(_lightDevice, _config);
+            var activityPublisher = new ActivityPublisher(_connectionFactory, _sendLogger);
+            _microphoneActivityPublisher = new MicrophoneActivityPublisher(new MicrophoneRegistryStatusChecker(), activityPublisher, _sendLogger);
+            _willReceive = _lightDevice.IsReady();
+            _icon = GetIcon(OffColor);
+            _startThread.Start();
+        }
+
+        void DoStartWork() {
+            var messagingConnectionSuccessful = false;
+            if (string.IsNullOrWhiteSpace(_config.MessageQueueUrl)) {
+                _mainLogger.Log($"{nameof(_config.MessageQueueUrl)} not defined. Correct and Quit/Restart.");
+            }
+            else {
+                try {
+                    _connectionFactory.Uri = new Uri(_config.MessageQueueUrl);
+                    using var connection = _connectionFactory.CreateConnection();
+                    messagingConnectionSuccessful = true;
+                }
+                catch (Exception e) {
+                    _mainLogger.Log(e.StackTrace);
+                    _mainLogger.Log(e.Message);
+                    _mainLogger.Log($"{nameof(_config.MessageQueueUrl)}: '{_config.MessageQueueUrl}'");
+                    _mainLogger.Log($"AMQP connect failed. Correct your config and Quit/Restart.");
+                }
+            }
+            if (messagingConnectionSuccessful) {
+                _publishingThread.Start();
+                _subscribingThread.Start();
+                _deviceThread.Start();
+            }
+            else {
+                UpdateIcons(OffColor, "Error");
+            }
         }
 
         protected override void OnClosing(CancelEventArgs e) {
@@ -66,27 +102,45 @@ namespace BusyLight.Client {
         [SuppressMessage("ReSharper", "FunctionNeverReturns", Justification = "Function runs in a background thread and is intended to run infinitely.")]
         void DoDeviceWork() {
             Thread.Sleep(TimeSpan.FromSeconds(1));
-            while (true) {
-                var timeSinceLastMessage = DateTime.UtcNow - _lastMessageWhenUtc;
-                var deviceChanger = _deviceChangerFactory.Create(timeSinceLastMessage);
-                var deviceState = deviceChanger.Change();
-                var deviceIsOn = deviceState is DeviceState.On or DeviceState.SimulatedOn;
-                var timeSinceLastDeviceStateLogShown = DateTime.UtcNow - _lastDeviceStateLogShownUtc;
-                colorPanel.BackColor = deviceIsOn ? Config.ActiveColor : Color.FromArgb(128, 119, 136, 153);
-                var onOffText = Enum.GetName(typeof(DeviceState), deviceState);
-                DestroyIcon(icon.Handle); // https://stackoverflow.com/questions/12026664/a-generic-error-occurred-in-gdi-when-calling-bitmap-gethicon#comment23138558_12026812
-                icon = GetIcon(colorPanel.BackColor);
-                notifyIcon1.Icon = icon;
-                AppIcon = icon;
-                notifyIcon1.Text = $@"BusyLight - {onOffText}";
-                LedLabelText = $@"LED ({onOffText}): ";
-                if (TimeSpan.FromSeconds(1) < timeSinceLastDeviceStateLogShown || deviceState != _lastDeviceState) {
-                    _mainLogger.Log(notifyIcon1.Text);
-                    _lastDeviceStateLogShownUtc = DateTime.UtcNow;
+            if (_willReceive) {
+                _mainLogger.Log("BlinkStick detected. This machine will send and receive activity.");
+                string lastNotifyIconText = null;
+                while (true) {
+                    var timeSinceLastMessage = DateTime.UtcNow - _lastMessageWhenUtc;
+                    var deviceChanger = _deviceChangerFactory.Create(timeSinceLastMessage);
+                    var deviceState = deviceChanger.Change();
+                    var deviceIsOn = deviceState is DeviceState.On or DeviceState.SimulatedOn;
+                    var timeSinceLastDeviceStateLogShown = DateTime.UtcNow - _lastDeviceStateLogShownUtc;
+                    var color = deviceIsOn ? _config.ActiveColor : OffColor;
+                    var onOffText = Enum.GetName(typeof(DeviceState), deviceState);
+                    UpdateIcons(color, onOffText);
+                    if (TimeSpan.FromSeconds(1) < timeSinceLastDeviceStateLogShown || deviceState != _lastDeviceState) {
+                        if (notifyIcon1.Text != lastNotifyIconText) {
+                            _mainLogger.Log(notifyIcon1.Text);
+                        }
+                        _lastDeviceStateLogShownUtc = DateTime.UtcNow;
+                        lastNotifyIconText = notifyIcon1.Text;
+                    }
+                    _lastDeviceState = deviceState;
+                    Thread.Sleep(250);
                 }
-                _lastDeviceState = deviceState;
-                Thread.Sleep(250);
             }
+            // ReSharper disable once RedundantIfElseBlock
+            else {
+                notifyIcon1.Icon = _icon;
+                AppIcon = _icon;
+                _mainLogger.Log("BlinkStick absent. This machine will only send (not receive) activity.");
+            }
+        }
+
+        void UpdateIcons(Color color, string statusText) {
+            colorPanel.BackColor = color;
+            DestroyIcon(_icon.Handle); // https://stackoverflow.com/questions/12026664/a-generic-error-occurred-in-gdi-when-calling-bitmap-gethicon#comment23138558_12026812
+            _icon = GetIcon(colorPanel.BackColor);
+            notifyIcon1.Icon = _icon;
+            AppIcon = _icon;
+            notifyIcon1.Text = $@"BusyLight - {statusText}";
+            LedLabelText = statusText;
         }
 
         Icon GetIcon(Color color) {
@@ -103,42 +157,53 @@ namespace BusyLight.Client {
 
         void DoSubscribingWork() {
             Thread.Sleep(TimeSpan.FromSeconds(1));
-            try {
-                _receiveLogger.Log("This log shows when activity is received.");
-                using var connection = ConnectionFactory.CreateConnection();
-                using var channel = connection.CreateModel();
-                channel.QueueDeclare(Constants.QueueName, durable: false, exclusive: false, autoDelete: true, null);
-                var consumer = new EventingBasicConsumer(channel);
-                consumer.Received += (_, deliveryEventArgs) => {
-                    //var body = deliveryEventArgs.Body.ToArray();
-                    //var message = Encoding.UTF8.GetString(body);
-                    _lastMessageWhenUtc = DateTime.UtcNow > _lastMessageWhenUtc ? DateTime.UtcNow : _lastMessageWhenUtc;
-                    // ReSharper disable once AccessToDisposedClosure
-                    channel.BasicAck(deliveryEventArgs.DeliveryTag, false);
-                    _receiveLogger.Log(Constants.ActivityReceiveMessage);
-                };
-                channel.BasicConsume(consumer, Constants.QueueName);
-                ResetEvent.WaitOne();
+            if (_willReceive) {
+                try {
+                    using var connection = _connectionFactory.CreateConnection();
+                    using var channel = connection.CreateModel();
+                    channel.QueueDeclare(Constants.QueueName, durable: false, exclusive: false, autoDelete: true, null);
+                    var consumer = new EventingBasicConsumer(channel);
+                    consumer.Received += (_, deliveryEventArgs) => {
+                        //var body = deliveryEventArgs.Body.ToArray();
+                        //var message = Encoding.UTF8.GetString(body);
+                        _lastMessageWhenUtc = DateTime.UtcNow > _lastMessageWhenUtc ? DateTime.UtcNow : _lastMessageWhenUtc;
+                        // ReSharper disable once AccessToDisposedClosure
+                        channel.BasicAck(deliveryEventArgs.DeliveryTag, false);
+                        _receiveLogger.Log(Constants.ActivityReceiveMessage);
+                    };
+                    channel.BasicConsume(consumer, Constants.QueueName);
+                    _receiveLogger.Log("This log shows when activity is received at your AMQP instance.");
+                    _resetEvent.WaitOne();
+                }
+                catch (Exception e) {
+                    _receiveLogger.Log($"Unable to subscribe ({e.Message}). Check your AMQP URL configuration, and then close and restart.");
+                }
             }
-            catch (Exception e) {
-                _receiveLogger.Log($"Unable to subscribe ({e.Message}). Check your AMQP URL configuration, and then close and restart.");
+            else {
+                _receiveLogger.Log("BlinkStick absent this machine, but activity will be sent.");
             }
         }
 
         [SuppressMessage("ReSharper", "FunctionNeverReturns", Justification = "Function runs in a background thread and is intended to run infinitely.")]
         void DoPublishingWork() {
             Thread.Sleep(TimeSpan.FromSeconds(1));
-            _sendLogger.Log("This log shows when activity is sent.");
+            _sendLogger.Log("This log shows when activity is sent to your AMQP instance.");
             while (true) {
                 var secondsToWaitBeforeNextCheck = 1;
                 try {
                     var activityPublished = _microphoneActivityPublisher.PublishMicrophoneActivity();
                     if (activityPublished) {
-                        secondsToWaitBeforeNextCheck = Config.PublishIntervalSeconds;
+                        secondsToWaitBeforeNextCheck = _config.PublishIntervalSeconds;
+                    }
+                    if (!_willReceive) {
+                        _lastMessageWhenUtc = DateTime.UtcNow > _lastMessageWhenUtc ? DateTime.UtcNow : _lastMessageWhenUtc;
+                        var color = activityPublished ? _config.ActiveColor : OffColor; 
+                        var statusText = activityPublished ? "Sending..." : "Idle";
+                        UpdateIcons(color, statusText);
                     }
                 }
                 catch (Exception e) {
-                    Console.WriteLine(e);
+                    _mainLogger.Log($"Unable to send activity. Error message: {e.Message}");
                 }
                 Thread.Sleep(TimeSpan.FromSeconds(secondsToWaitBeforeNextCheck));
             }
@@ -198,9 +263,11 @@ namespace BusyLight.Client {
         }
 
         void quitToolStripMenuItem_Click(object sender, EventArgs e) {
-            _publishingThread?.Abort();
-            _subscribingThread?.Abort();
+            new OffDeviceChanger(_lightDevice).Change();
             _deviceThread?.Abort();
+            _subscribingThread?.Abort();
+            _publishingThread?.Abort();
+            _startThread?.Abort();
             _lightDevice?.Dispose();
             Application.Exit();
         }
@@ -210,8 +277,6 @@ namespace BusyLight.Client {
         }
 
         void ShowWindow() {
-            var activeColor = Config.ActiveColor;
-            colorPanel.BackColor = activeColor;
             WindowState = FormWindowState.Normal;
             Show();
             Activate();

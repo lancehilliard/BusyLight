@@ -149,8 +149,9 @@ namespace BusyLight.Client {
             this.mainTextBox.ReadOnly = true;
             this.tableLayoutPanel1.SetRowSpan(this.mainTextBox, 2);
             this.mainTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.mainTextBox.Size = new System.Drawing.Size(449, 408);
+            this.mainTextBox.Size = new System.Drawing.Size(451, 408);
             this.mainTextBox.TabIndex = 1;
+            this.mainTextBox.TabStop = false;
             this.mainTextBox.WordWrap = false;
             // 
             // tableLayoutPanel1
@@ -170,7 +171,7 @@ namespace BusyLight.Client {
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(910, 414);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(915, 414);
             this.tableLayoutPanel1.TabIndex = 7;
             // 
             // sendTextBox
@@ -178,13 +179,14 @@ namespace BusyLight.Client {
             this.sendTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.sendTextBox.Location = new System.Drawing.Point(458, 3);
+            this.sendTextBox.Location = new System.Drawing.Point(460, 3);
             this.sendTextBox.Multiline = true;
             this.sendTextBox.Name = "sendTextBox";
             this.sendTextBox.ReadOnly = true;
             this.sendTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.sendTextBox.Size = new System.Drawing.Size(449, 201);
+            this.sendTextBox.Size = new System.Drawing.Size(452, 201);
             this.sendTextBox.TabIndex = 2;
+            this.sendTextBox.TabStop = false;
             this.sendTextBox.WordWrap = false;
             // 
             // receiveTextBox
@@ -192,13 +194,14 @@ namespace BusyLight.Client {
             this.receiveTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.receiveTextBox.Location = new System.Drawing.Point(458, 210);
+            this.receiveTextBox.Location = new System.Drawing.Point(460, 210);
             this.receiveTextBox.Multiline = true;
             this.receiveTextBox.Name = "receiveTextBox";
             this.receiveTextBox.ReadOnly = true;
             this.receiveTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.receiveTextBox.Size = new System.Drawing.Size(449, 201);
+            this.receiveTextBox.Size = new System.Drawing.Size(452, 201);
             this.receiveTextBox.TabIndex = 3;
+            this.receiveTextBox.TabStop = false;
             this.receiveTextBox.WordWrap = false;
             // 
             // ledPanel
@@ -209,7 +212,7 @@ namespace BusyLight.Client {
             this.ledPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.ledPanel.Controls.Add(this.ledLabel, 0, 0);
             this.ledPanel.Controls.Add(this.colorPanel, 1, 0);
-            this.ledPanel.Location = new System.Drawing.Point(722, 4);
+            this.ledPanel.Location = new System.Drawing.Point(727, 4);
             this.ledPanel.Name = "ledPanel";
             this.ledPanel.RowCount = 1;
             this.ledPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -220,7 +223,7 @@ namespace BusyLight.Client {
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(934, 461);
+            this.ClientSize = new System.Drawing.Size(939, 461);
             this.Controls.Add(this.ledPanel);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
