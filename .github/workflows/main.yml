@@ -46,7 +46,8 @@ jobs:
       
     - name: Build Installer
       shell: cmd
-      run: C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common\IDE\devenv.exe BusyLight.sln /Rebuild /Project BusyLight.Install\BusyLight.Install.vdproj /ProjectConfig ProjConfigName
+      run: |
+        C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common\IDE\devenv.exe BusyLight.sln /Rebuild /Project BusyLight.Install\BusyLight.Install.vdproj /ProjectConfig ProjConfigName
 
     - name: Upload Installer Artifact
       uses: actions/upload-artifact@v2
