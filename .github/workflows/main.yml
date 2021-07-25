@@ -59,7 +59,7 @@ jobs:
       run: msbuild BusyLight.Install\BusyLight.Install.vdproj /p:Configuration=Release
 
     - name: Upload MSI Artifact
-    - uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v2
       with:
         name: MSI
         path: BusyLight.Install/Release/BusyLight.msi
