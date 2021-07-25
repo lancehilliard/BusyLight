@@ -53,7 +53,7 @@
     <StartupObject>BusyLight.Client.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>BusyLight-On.ico</ApplicationIcon>
+    <ApplicationIcon>BusyLight.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BlinkStickDotNet, Version=2.0.16.0, Culture=neutral, processorArchitecture=MSIL">
@@ -131,10 +131,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="BusyLight-Off.ico" />
-    <Content Include="BusyLight-On.ico" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\BusyLight.Core\BusyLight.Core.csproj">
       <Project>{3D5A82B6-FA10-4515-B5CD-B58CD9F77B90}</Project>
       <Name>BusyLight.Core</Name>
@@ -151,6 +147,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BusyLight.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

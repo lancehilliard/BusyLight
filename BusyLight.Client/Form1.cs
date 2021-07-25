@@ -55,13 +55,13 @@ namespace BusyLight.Client {
         }
 
         protected override void OnClosing(CancelEventArgs e) {
-            //WindowState = FormWindowState.Minimized;
             Hide();
             e.Cancel = true;
         }
 
         [SuppressMessage("ReSharper", "FunctionNeverReturns", Justification = "Function runs in a background thread and is intended to run infinitely.")]
         void DoDeviceWork() {
+            Thread.Sleep(TimeSpan.FromSeconds(1));
             if (LightDevice.IsReady()) {
                 while (true) {
                     var timeSinceLastMessage = DateTime.UtcNow - _lastMessageWhenUtc;
@@ -69,9 +69,11 @@ namespace BusyLight.Client {
                     var deviceState = deviceChanger.Change();
                     var deviceIsOn = deviceState == DeviceState.On;
                     var timeSinceLastDeviceStateLogShown = DateTime.UtcNow - _lastDeviceStateLogShownUtc;
-                    colorPanel.BackColor = deviceState == DeviceState.On ? Config.ActiveColor : Color.LightSlateGray;
+                    colorPanel.BackColor = deviceIsOn ? Config.ActiveColor : Color.LightSlateGray;
+                    var onOffText = Enum.GetName(typeof(DeviceState), deviceState);
                     notifyIcon1.Icon = GetIcon(colorPanel.BackColor);
-                    notifyIcon1.Text = $@"BusyLight - {(deviceIsOn ? "On" : "Off")}";
+                    notifyIcon1.Text = $@"BusyLight - {onOffText}";
+                    LedLabelText = $@"LED ({onOffText}): ";
                     if (TimeSpan.FromSeconds(1) < timeSinceLastDeviceStateLogShown || deviceState != _lastDeviceState) {
                         _mainLogger.Log(notifyIcon1.Text);
                         _lastDeviceStateLogShownUtc = DateTime.UtcNow;
@@ -95,6 +97,7 @@ namespace BusyLight.Client {
         }
 
         void DoSubscribingWork() {
+            Thread.Sleep(TimeSpan.FromSeconds(1));
             try {
                 if (LightDevice.IsReady()) {
                     using var connection = ConnectionFactory.CreateConnection();
@@ -124,6 +127,7 @@ namespace BusyLight.Client {
 
         [SuppressMessage("ReSharper", "FunctionNeverReturns", Justification = "Function runs in a background thread and is intended to run infinitely.")]
         void DoPublishingWork() {
+            Thread.Sleep(TimeSpan.FromSeconds(1));
             _sendLogger.Log("This log shows when activity is sent.");
             while (true) {
                 var secondsToWaitBeforeNextCheck = 1;
@@ -150,6 +154,13 @@ namespace BusyLight.Client {
             set {
                 mainTextBox.Invoke(new MethodInvoker(SetValue));
                 void SetValue() => mainTextBox.Text = value;
+            }
+        }
+
+        string LedLabelText {
+            set {
+                ledLabel.Invoke(new MethodInvoker(SetValue));
+                void SetValue() => ledLabel.Text = value;
             }
         }
 
@@ -193,7 +204,6 @@ namespace BusyLight.Client {
 
         void ShowWindow() {
             var activeColor = Config.ActiveColor;
-            colorDialog1.Color = activeColor;
             colorPanel.BackColor = activeColor;
             WindowState = FormWindowState.Normal;
             Show();
@@ -205,12 +215,5 @@ namespace BusyLight.Client {
                 ShowWindow();
             }
         }
-
-        //void colorPanel_Click(object sender, EventArgs e) {
-        //    if (colorDialog1.ShowDialog() == DialogResult.OK) {
-        //        _activeColorSetter.Set(colorDialog1.Color);
-        //        colorPanel.BackColor = colorDialog1.Color;
-        //    }
-        //}
     }
 }

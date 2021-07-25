@@ -32,14 +32,13 @@ namespace BusyLight.Client {
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.openStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.label2 = new System.Windows.Forms.Label();
-            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.ledLabel = new System.Windows.Forms.Label();
             this.colorPanel = new System.Windows.Forms.Panel();
             this.mainTextBox = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.sendTextBox = new System.Windows.Forms.TextBox();
             this.receiveTextBox = new System.Windows.Forms.TextBox();
-            this.ledPanel = new System.Windows.Forms.Panel();
+            this.ledPanel = new System.Windows.Forms.TableLayoutPanel();
             this.contextMenuStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.ledPanel.SuspendLayout();
@@ -91,28 +90,27 @@ namespace BusyLight.Client {
             this.quitToolStripMenuItem.ToolTipText = "Quit BusyLight";
             this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
-            // label2
+            // ledLabel
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Yu Gothic UI", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(43, 9);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(32, 13);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "LED :";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // colorDialog1
-            // 
-            this.colorDialog1.SolidColorOnly = true;
+            this.ledLabel.AutoSize = true;
+            this.ledLabel.Dock = System.Windows.Forms.DockStyle.Right;
+            this.ledLabel.Font = new System.Drawing.Font("Yu Gothic UI", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ledLabel.Location = new System.Drawing.Point(16, 0);
+            this.ledLabel.Margin = new System.Windows.Forms.Padding(0);
+            this.ledLabel.Name = "ledLabel";
+            this.ledLabel.Size = new System.Drawing.Size(59, 26);
+            this.ledLabel.TabIndex = 4;
+            this.ledLabel.Text = "LED (Off) :";
+            this.ledLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // colorPanel
             // 
             this.colorPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.colorPanel.Location = new System.Drawing.Point(81, 6);
+            this.colorPanel.Dock = System.Windows.Forms.DockStyle.Right;
+            this.colorPanel.Location = new System.Drawing.Point(78, 3);
             this.colorPanel.Name = "colorPanel";
-            this.colorPanel.Size = new System.Drawing.Size(20, 20);
-            this.colorPanel.TabIndex = 6;
+            this.colorPanel.Size = new System.Drawing.Size(19, 20);
+            this.colorPanel.TabIndex = 0;
             // 
             // mainTextBox
             // 
@@ -179,13 +177,17 @@ namespace BusyLight.Client {
             // 
             // ledPanel
             // 
-            this.ledPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ledPanel.Controls.Add(this.colorPanel);
-            this.ledPanel.Controls.Add(this.label2);
-            this.ledPanel.Location = new System.Drawing.Point(818, 3);
+            this.ledPanel.ColumnCount = 2;
+            this.ledPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75F));
+            this.ledPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 25F));
+            this.ledPanel.Controls.Add(this.ledLabel, 0, 0);
+            this.ledPanel.Controls.Add(this.colorPanel, 1, 0);
+            this.ledPanel.Location = new System.Drawing.Point(822, 5);
             this.ledPanel.Name = "ledPanel";
-            this.ledPanel.Size = new System.Drawing.Size(101, 29);
-            this.ledPanel.TabIndex = 8;
+            this.ledPanel.RowCount = 1;
+            this.ledPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.ledPanel.Size = new System.Drawing.Size(100, 25);
+            this.ledPanel.TabIndex = 5;
             // 
             // Form1
             // 
@@ -218,14 +220,13 @@ namespace BusyLight.Client {
         private System.Windows.Forms.ToolStripTextBox busyLightToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem openStripMenuItem;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ColorDialog colorDialog1;
+        private System.Windows.Forms.Label ledLabel;
         private System.Windows.Forms.Panel colorPanel;
         private System.Windows.Forms.TextBox mainTextBox;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.TextBox sendTextBox;
         private System.Windows.Forms.TextBox receiveTextBox;
-        private System.Windows.Forms.Panel ledPanel;
+        private System.Windows.Forms.TableLayoutPanel ledPanel;
     }
 }
 

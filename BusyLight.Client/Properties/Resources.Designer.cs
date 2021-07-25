@@ -59,25 +59,5 @@ namespace BusyLight.Client.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon BusyLight_Off {
-            get {
-                object obj = ResourceManager.GetObject("BusyLight_Off", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon BusyLight_On {
-            get {
-                object obj = ResourceManager.GetObject("BusyLight_On", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
     }
 }
