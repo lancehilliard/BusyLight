@@ -50,13 +50,18 @@ jobs:
         ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
 
     - name: Build Tests
-      run: msbuild BusyLight.sln /p:Configuration=Release
+      run: msbuild BusyLight.Specs\BusyLight.Specs.csproj /p:Configuration=Release
       
     - name: Setup Test Runner
       uses: Malcolmnixon/Setup-VSTest@v4
 
     - name: Run Tests
       run: vstest.console BusyLight.Specs\bin\Release\BusyLight.Specs.dll
+
+    - name: Build Installer
+      run: |
+        cd "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\"
+        .\devenv.exe BusyLight.Install\BusyLight.Install.vdproj /build Release
 
     - name: Upload Installer Artifact
       uses: actions/upload-artifact@v2
