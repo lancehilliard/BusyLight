@@ -6,7 +6,7 @@ If you want to _automatically_ and _visually_ alert others nearby that you're bu
 
 ## Use Case
 
-You're using one or more devices (Windows desktop and/or laptop, mobile[1], etc) to perform work. You sometimes want to automatically signal "please don't interrupt me" to anyone nearby. BusyLight monitors the activity of your various devices and illuminates your single [BlinkStick](https://www.blinkstick.com) during their "busy" moments.
+You're using one or more devices (Windows desktop and/or laptop, mobile[1], etc) to perform work. You sometimes want to automatically signal "please don't interrupt me" to anyone nearby. BusyLight monitors the activity of your various devices and, during their "busy" moments, illuminates your single [BlinkStick](https://www.blinkstick.com).
 
 BusyLight was built for a [BlinkStick Square](https://www.blinkstick.com/products/blinkstick-square). And, so far, it only tracks voice/video calls (the first two LEDs light up when software accesses[2] your microphone). What other BlinkStick products would you like it to support? What other work/activity would you like it to track?
 
@@ -16,7 +16,7 @@ BusyLight supports May 2019's Windows 10 1903 or greater. It exploits system dat
 
 ## Devices
 
-BusyLight runs on the machine connected to your BlinkStick, and also on any other machine(s) you're working on. That _can_ involve only a _single_ device, if you just want to monitor one PC, but BusyLight's strength lay in controlling a single BlinkStick based on the activity of _multiple_ devices.
+BusyLight runs on the machine connected to your BlinkStick, and also on any other machine(s) you're working on. That _can_ involve only a _single_ device, if you aren't using multiple devices, but BusyLight's strength lay in controlling a single BlinkStick based on the activity of _multiple_ devices.
 
 ## Requirements
 
