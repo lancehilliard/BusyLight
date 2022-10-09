@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using BlinkStickDotNet;
 
 namespace BusyLight.Core {
@@ -66,7 +67,8 @@ namespace BusyLight.Core {
                 action(Device);
             }
             catch (Exception e) {
-                _logger.Log($"BlinkStick error. Message: {e.Message}; Trace: {e.StackTrace}");
+                var messages = string.Join("; ", new List<string>{e.Message, e.InnerException?.Message}.Where(x=>x!=null));
+                _logger.Log($"BlinkStick error. Message: {messages}; Trace: {e.StackTrace}");
                 _device?.CloseDevice();
                 _device = null;
             }

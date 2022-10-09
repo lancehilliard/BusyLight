@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using RabbitMQ.Client;
 
@@ -27,7 +29,8 @@ namespace BusyLight.Core {
                 channel.BasicPublish(string.Empty, Constants.QueueName, basicProperties, data);
             }
             catch (Exception e) {
-                _logger.Log($"Unable to publish ({e.Message}). Check your AMQP URL configuration, and then close and restart.");
+                var messages = string.Join("; ", new List<string>{e.Message, e.InnerException?.Message}.Where(x=>x!=null));
+                _logger.Log($"Unable to publish ({messages}). Check your AMQP URL configuration, and then close and restart.");
             }
         }
     }

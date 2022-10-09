@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
@@ -6,6 +7,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.Linq;
 using System.Net.Mail;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -17,7 +19,7 @@ using Constants = BusyLight.Core.Constants;
 
 namespace BusyLight.Client {
     public partial class Form1 : Form {
-        static readonly int LogDisplayLength = 25000;
+        static readonly int LogDisplayCharacterLength = 25000;
         static readonly Color OffColor = Color.FromArgb(128, 119, 136, 153);
 
         readonly IConfig _config;
@@ -77,6 +79,10 @@ namespace BusyLight.Client {
                 catch (Exception e) {
                     _mainLogger.Log(e.StackTrace);
                     _mainLogger.Log(e.Message);
+                    if (e.InnerException != null) {
+                        _mainLogger.Log(e.InnerException.StackTrace);
+                        _mainLogger.Log(e.InnerException.Message);
+                    }
                     _mainLogger.Log($"{nameof(_config.MessageQueueUrl)}: '{_config.MessageQueueUrl}'");
                     _mainLogger.Log($"AMQP connect failed. Correct your config and Quit/Restart.");
                 }
@@ -101,7 +107,7 @@ namespace BusyLight.Client {
 
         [SuppressMessage("ReSharper", "FunctionNeverReturns", Justification = "Function runs in a background thread and is intended to run infinitely.")]
         void DoDeviceWork() {
-            Thread.Sleep(TimeSpan.FromSeconds(1));
+            PerformLightTest();
             if (_willReceive) {
                 _mainLogger.Log("BlinkStick detected. This machine will send and receive activity.");
                 string lastNotifyIconText = null;
@@ -131,6 +137,18 @@ namespace BusyLight.Client {
                 AppIcon = _icon;
                 _mainLogger.Log("BlinkStick absent. This machine will only send (not receive) activity.");
             }
+        }
+
+        void PerformLightTest() {
+            Thread.Sleep(TimeSpan.FromSeconds(1));
+            var onDeviceChanger = new OnDeviceChanger(_lightDevice, _config);
+            var offDeviceChanger = new OffDeviceChanger(_lightDevice);
+            onDeviceChanger.Change();
+            UpdateIcons(_config.ActiveColor, "Testing...");
+            Thread.Sleep(TimeSpan.FromSeconds(1));
+            var offState = offDeviceChanger.Change();
+            var offText = Enum.GetName(typeof(DeviceState), offState);
+            UpdateIcons(OffColor, offText);
         }
 
         void UpdateIcons(Color color, string statusText) {
@@ -176,7 +194,8 @@ namespace BusyLight.Client {
                     _resetEvent.WaitOne();
                 }
                 catch (Exception e) {
-                    _receiveLogger.Log($"Unable to subscribe ({e.Message}). Check your AMQP URL configuration, and then close and restart.");
+                    var messages = string.Join("; ", new List<string>{e.Message, e.InnerException?.Message}.Where(x=>x!=null));
+                    _receiveLogger.Log($"Unable to subscribe ({messages}). Check your AMQP URL configuration, and then close and restart.");
                 }
             }
             else {
@@ -203,7 +222,8 @@ namespace BusyLight.Client {
                     }
                 }
                 catch (Exception e) {
-                    _mainLogger.Log($"Unable to send activity. Error message: {e.Message}");
+                    var messages = string.Join("; ", new List<string>{e.Message, e.InnerException?.Message}.Where(x=>x!=null));
+                    _mainLogger.Log($"Unable to send activity. Error: {messages}");
                 }
                 Thread.Sleep(TimeSpan.FromSeconds(secondsToWaitBeforeNextCheck));
             }
@@ -214,7 +234,7 @@ namespace BusyLight.Client {
                 string result = null;
                 mainTextBox.Invoke(new MethodInvoker(GetValue));
                 return result;
-                void GetValue() => result = mainTextBox.Text.Substring(0, mainTextBox.Text.Length > LogDisplayLength ? LogDisplayLength : mainTextBox.Text.Length);
+                void GetValue() => result = mainTextBox.Text.Substring(0, mainTextBox.Text.Length > LogDisplayCharacterLength ? LogDisplayCharacterLength : mainTextBox.Text.Length);
             }
             set {
                 mainTextBox.Invoke(new MethodInvoker(SetValue));
@@ -241,7 +261,7 @@ namespace BusyLight.Client {
                 string result = null;
                 sendTextBox.Invoke(new MethodInvoker(GetValue));
                 return result;
-                void GetValue() => result = sendTextBox.Text.Substring(0, sendTextBox.Text.Length > LogDisplayLength ? LogDisplayLength : sendTextBox.Text.Length);
+                void GetValue() => result = sendTextBox.Text.Substring(0, sendTextBox.Text.Length > LogDisplayCharacterLength ? LogDisplayCharacterLength : sendTextBox.Text.Length);
             }
             set {
                 sendTextBox.Invoke(new MethodInvoker(SetValue));
@@ -254,7 +274,7 @@ namespace BusyLight.Client {
                 string result = null;
                 receiveTextBox.Invoke(new MethodInvoker(GetValue));
                 return result;
-                void GetValue() => result = receiveTextBox.Text.Substring(0, receiveTextBox.Text.Length > LogDisplayLength ? LogDisplayLength : receiveTextBox.Text.Length);
+                void GetValue() => result = receiveTextBox.Text.Substring(0, receiveTextBox.Text.Length > LogDisplayCharacterLength ? LogDisplayCharacterLength : receiveTextBox.Text.Length);
             }
             set {
                 receiveTextBox.Invoke(new MethodInvoker(SetValue));
