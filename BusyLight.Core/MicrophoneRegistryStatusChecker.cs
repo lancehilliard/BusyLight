@@ -10,6 +10,12 @@ namespace BusyLight.Core {
 
     public class MicrophoneRegistryStatusChecker : IMicrophoneStatusChecker {
         static readonly string RootSubKey = @"SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\microphone";
+        readonly IConfig _config;
+
+        public MicrophoneRegistryStatusChecker(IConfig config) {
+            _config = config;
+        }
+
         public bool IsMicrophoneBeingUsed() {
             var result = false;
             var registryKeys = new List<RegistryKey>{Registry.LocalMachine,Registry.CurrentUser};
@@ -36,8 +42,13 @@ namespace BusyLight.Core {
                                     result = IsMicrophoneBeingUsedByChildren(registryKey, childSubKeyPath);
                                 }
                                 else {
-                                    var value = childSubKey.GetValue("LastUsedTimeStop");
-                                    result = value != null && default(long).Equals(Convert.ToInt64(value));
+                                    var lastUsedTimeStop = childSubKey.GetValue("LastUsedTimeStop");
+                                    if (lastUsedTimeStop != null) {
+                                        var keyIsRelevant = !_config.MicrophoneRegistryKeyIgnores.Any(x=>childSubKeyName.IndexOf(x, StringComparison.OrdinalIgnoreCase) >= 0);
+                                        if (keyIsRelevant) {
+                                            result = default(long).Equals(Convert.ToInt64(lastUsedTimeStop));
+                                        }
+                                    }
                                 }
                             }
                         }

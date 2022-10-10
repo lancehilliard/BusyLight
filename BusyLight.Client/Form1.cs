@@ -59,7 +59,7 @@ namespace BusyLight.Client {
             _lightDevice =  new SquareLightDevice(_mainLogger);
             _deviceChangerFactory = new DeviceChangerFactory(_lightDevice, _config);
             var activityPublisher = new ActivityPublisher(_connectionFactory, _sendLogger);
-            _microphoneActivityPublisher = new MicrophoneActivityPublisher(new MicrophoneRegistryStatusChecker(), activityPublisher, _sendLogger);
+            _microphoneActivityPublisher = new MicrophoneActivityPublisher(new MicrophoneRegistryStatusChecker(_config), activityPublisher, _sendLogger);
             _willReceive = _lightDevice.IsReady();
             _icon = GetIcon(OffColor);
             _startThread.Start();

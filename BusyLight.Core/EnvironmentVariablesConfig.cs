@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace BusyLight.Core {
@@ -8,6 +10,7 @@ namespace BusyLight.Core {
         int PublishIntervalSeconds { get; }
         Color ActiveColor { get; }
         int AssumeMaxSeconds { get; }
+        IEnumerable<string> MicrophoneRegistryKeyIgnores { get; }
     }
 
     public abstract class Config : IConfig {
@@ -39,6 +42,14 @@ namespace BusyLight.Core {
         public int AssumeMaxSeconds {
             get {
                 int result = int.TryParse(Get(), out result) ? result : 10;
+                return result;
+            }
+        }
+
+        public IEnumerable<string> MicrophoneRegistryKeyIgnores { 
+            get {
+                var value = Get();
+                var result = string.IsNullOrWhiteSpace(value) ? Enumerable.Empty<string>() : value.Split(';');
                 return result;
             }
         }
